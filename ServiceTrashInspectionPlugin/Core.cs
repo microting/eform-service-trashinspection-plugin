@@ -9,7 +9,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 //using eFormCore.Installers;
-using ServiceTrashInspectionPlugin.Infrastructure;
+//using ServiceTrashInspectionPlugin.Infrastructure;
 using ServiceTrashInspectionPlugin.Installers;
 
 namespace ServiceTrashInspectionPlugin
@@ -19,7 +19,7 @@ namespace ServiceTrashInspectionPlugin
     {
         #region var
 
-        private SqlController _sqlController;
+//        private SqlController _sqlController;
         private Tools t = new Tools();
         private eFormCore.Core _sdkCore;
 //        public Log log;
@@ -105,31 +105,31 @@ namespace ServiceTrashInspectionPlugin
                         throw new ArgumentException("serverConnectionString is not allowed to be null or empty");
                     
                     //sqlController
-                    _sqlController = new SqlController(connectionString);
+//                    _sqlController = new SqlController(connectionString);
                     
                     
                     //check settings
-                    if (_sqlController.SettingCheckAll().Count > 0)
-                        throw new ArgumentException("Use AdminTool to setup database correctly. 'SettingCheckAll()' returned with errors");
+//                    if (_sqlController.SettingCheckAll().Count > 0)
+//                        throw new ArgumentException("Use AdminTool to setup database correctly. 'SettingCheckAll()' returned with errors");
 
-                    if (_sqlController.SettingRead(SqlController.Settings.SdkConnectionString) == "...")
-                        throw new ArgumentException("Use AdminTool to setup database correctly. microtingDb(connection string) not set, only default value found");
-                    
-                    try
-                    {
-                        _maxParallelism = int.Parse(_sqlController.SettingRead(SqlController.Settings.MaxParallelism));
-                        _numberOfWorkers = int.Parse(_sqlController.SettingRead(SqlController.Settings.NumberOfWorkers));
-                    }
-                    catch { }
+//                    if (_sqlController.SettingRead(SqlController.Settings.SdkConnectionString) == "...")
+//                        throw new ArgumentException("Use AdminTool to setup database correctly. microtingDb(connection string) not set, only default value found");
+//                    
+//                    try
+//                    {
+//                        _maxParallelism = int.Parse(_sqlController.SettingRead(SqlController.Settings.MaxParallelism));
+//                        _numberOfWorkers = int.Parse(_sqlController.SettingRead(SqlController.Settings.NumberOfWorkers));
+//                    }
+//                    catch { }
                     
                     _coreAvailable = true;
                     _coreStatChanging = false;
                     
-                    string sdkCoreConnectionString = _sqlController.SettingRead(SqlController.Settings.SdkConnectionString);
-                    startSdkCoreSqlOnly(sdkCoreConnectionString);
+//                    string sdkCoreConnectionString = _sqlController.SettingRead(SqlController.Settings.SdkConnectionString);
+//                    startSdkCoreSqlOnly(sdkCoreConnectionString);
                     
                     _container = new WindsorContainer();
-                    _container.Register(Component.For<SqlController>().Instance(_sqlController));
+//                    _container.Register(Component.For<SqlController>().Instance(_sqlController));
                     _container.Register(Component.For<eFormCore.Core>().Instance(_sdkCore));
 //                    _container.Register(Component.For<Log>().Instance(log));
                     _container.Install(
@@ -173,7 +173,7 @@ namespace ServiceTrashInspectionPlugin
                     }
 
 //                    log.LogStandard(t.GetMethodName("Core"), "Core closed");
-                    _sqlController = null;
+//                    _sqlController = null;
                     _sdkCore.Close();
 
                     _coreStatChanging = false;
