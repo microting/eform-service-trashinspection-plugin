@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>../../eform-windows-service/ServiceTestConsole/bin/Debug/Plugins/TrashInspectionPlugin</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microting.eForm" Version="3.0.155" />
     <PackageReference Include="Microting.eFormTrashInspectionBase" Version="1.1.17" />
