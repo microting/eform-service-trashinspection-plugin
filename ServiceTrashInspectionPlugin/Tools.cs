@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
+//using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace ServiceTrashInspectionPlugin
@@ -429,7 +429,7 @@ namespace ServiceTrashInspectionPlugin
             return int.Parse(str.Substring(0, lenght));
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
+        //[MethodImpl(MethodImplOptions.NoInlining)]
         public string GetMethodName(string className)
         {
             StackTrace st = new StackTrace();

@@ -4,15 +4,11 @@ namespace ServiceTrashInspectionPlugin.Messages
 {
     public class EformCompleted
     {
-        public string NotificationUId { get; protected set; }
-        public string MicrotringUUID { get; protected set; }
+        public string caseId { get; protected set; }
 
-        public EformCompleted(string notificationUId, string microtringUUID)
+        public EformCompleted(string caseId)
         {
-            if (string.IsNullOrEmpty(notificationUId)) throw new ArgumentNullException(nameof(notificationUId));
-
-            NotificationUId = notificationUId;
-            MicrotringUUID = microtringUUID;
+            this.caseId = caseId;
         }
     }
 }

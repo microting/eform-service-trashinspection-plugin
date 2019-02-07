@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Rebus.Handlers;
 using ServiceTrashInspectionPlugin.Messages;
@@ -8,7 +9,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
     {
         public async Task Handle(EformCompleted message)
         {
-            throw new System.NotImplementedException();
+            Console.WriteLine("We got a message : " + message.caseId);
         }
     }
 }

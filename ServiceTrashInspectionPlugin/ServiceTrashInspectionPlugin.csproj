@@ -1,17 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	<UseNETCoreGenerator>true</UseNETCoreGenerator>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>../../eform-windows-service/ServiceTestConsole/bin/Debug/Plugins/TrashInspectionPlugin</OutputPath>
+    <OutputPath>C:\Users\trole\Documents\Visual_Studio_2015\Projects\eform-windows-service\ServiceTestConsole\bin\Debug\Plugins\TrashInspection</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.1" />
     <PackageReference Include="Microting.eForm" Version="3.0.155" />
-    <PackageReference Include="Microting.eFormTrashInspectionBase" Version="1.1.26" />
+    <PackageReference Include="Microting.eFormTrashInspectionBase" Version="1.1.26" >
+	        <IncludeAssets>all</IncludeAssets>
+	</PackageReference>
     <PackageReference Include="Microting.WindowsService.BasePn" Version="1.1.13" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.4" />
     <PackageReference Include="System.ComponentModel.Composition" Version="4.5.0" />
   </ItemGroup>
 
