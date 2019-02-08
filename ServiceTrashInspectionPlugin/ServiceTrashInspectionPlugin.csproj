@@ -4,6 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 	<UseNETCoreGenerator>true</UseNETCoreGenerator>
   </PropertyGroup>
+  <PropertyGroup>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>C:\Users\trole\Documents\Visual_Studio_2015\Projects\eform-windows-service\ServiceTestConsole\bin\Debug\Plugins\TrashInspection</OutputPath>

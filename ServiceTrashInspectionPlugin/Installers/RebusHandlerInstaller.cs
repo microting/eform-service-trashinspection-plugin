@@ -11,7 +11,8 @@ namespace ServiceTrashInspectionPlugin.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-        container.Register(Component.For<IHandleMessages<EformCompleted>>().ImplementedBy<EformCompletedHandler>().LifestyleTransient());
+        container.Register(Component.For<IHandleMessages<eFormCompleted>>().ImplementedBy<eFormCompletedHandler>().LifestyleTransient());
+        container.Register(Component.For<IHandleMessages<eFormRetrieved>>().ImplementedBy<eFormRetrievedHandler>().LifestyleTransient());
 
         }
     }

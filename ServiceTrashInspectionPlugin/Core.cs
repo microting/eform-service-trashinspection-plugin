@@ -43,8 +43,8 @@ namespace ServiceTrashInspectionPlugin
         {
             eFormShared.Case_Dto trigger = (eFormShared.Case_Dto)sender;
 
-            string CaseId = trigger.CaseId.ToString();
-            _bus.SendLocal(new EformCompleted(CaseId));
+            string CaseId = trigger.MicrotingUId;
+            _bus.SendLocal(new eFormCompleted(CaseId));
         }
 
         public void CaseDeleted(object sender, EventArgs args)
@@ -69,7 +69,10 @@ namespace ServiceTrashInspectionPlugin
 
         public void eFormRetrived(object sender, EventArgs args)
         {
-            // Do nothing
+            eFormShared.Case_Dto trigger = (eFormShared.Case_Dto)sender;
+
+            string CaseId = trigger.MicrotingUId;
+            _bus.SendLocal(new eFormRetrieved(CaseId));
         }
 
         public void NotificationNotFound(object sender, EventArgs args)
@@ -131,7 +134,7 @@ namespace ServiceTrashInspectionPlugin
                     //                    catch { }
                     TrashInspectionPnContextFactory contextFactory = new TrashInspectionPnContextFactory();
 
-                    contextFactory.CreateDbContext(new[] { connectionString });
+                    _dbContext = contextFactory.CreateDbContext(new[] { connectionString });
                     _dbContext.Database.Migrate();
 
                     _coreAvailable = true;

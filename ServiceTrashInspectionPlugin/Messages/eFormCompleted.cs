@@ -1,12 +1,10 @@
-using System;
-
 namespace ServiceTrashInspectionPlugin.Messages
 {
-    public class EformCompleted
+    public class eFormCompleted
     {
         public string caseId { get; protected set; }
 
-        public EformCompleted(string caseId)
+        public eFormCompleted(string caseId)
         {
             this.caseId = caseId;
         }
