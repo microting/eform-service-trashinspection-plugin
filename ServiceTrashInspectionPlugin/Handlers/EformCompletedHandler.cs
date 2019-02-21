@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Entities;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Factories;
 using Rebus.Handlers;
 using ServiceTrashInspectionPlugin.Messages;
+using TrashInspectionServiceReference;
 
 namespace ServiceTrashInspectionPlugin.Handlers
 {
@@ -51,6 +53,43 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         await _dbContext.SaveChangesAsync();
                     }
 
+                }
+
+                BasicHttpBinding basicHttpBinding =
+                new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+                basicHttpBinding.Security.Transport.ClientCredentialType =
+                    HttpClientCredentialType.Ntlm;
+
+                ChannelFactory<MicrotingWS_Port> factory =
+                    new ChannelFactory<TrashInspectionServiceReference.MicrotingWS_Port>(basicHttpBinding,
+                    new EndpointAddress(
+                        new Uri(@"...")));
+                //factory.Credentials.Windows.ClientCredential.Domain = domain;
+                //factory.Credentials.Windows.ClientCredential.UserName = user;
+                //factory.Credentials.Windows.ClientCredential.Password = pass;
+                MicrotingWS_Port serviceProxy = factory.CreateChannel();
+                ((ICommunicationObject)serviceProxy).Open();
+                //OperationContext opContext = new OperationContext((IClientChannel)serviceProxy);
+                //OperationContext prevOpContext = OperationContext.Current; // Optional if there's no way this might already be set
+                //OperationContext.Current = opContext;
+
+                try
+                {
+                    WeighingFromMicroting2 vejningFraMicroTing2 = new WeighingFromMicroting2(trashInspection.WeighingNumber, true);
+                    Task<WeighingFromMicroting2_Result> result = serviceProxy.WeighingFromMicroting2Async(vejningFraMicroTing2);
+
+
+                    Console.WriteLine("Result is " + result.Result.return_value);
+
+                }
+                finally
+                {
+                    // cleanup
+                    factory.Close();
+                    ((ICommunicationObject)serviceProxy).Close();
+                    // *** ENSURE CLEANUP *** \\
+                    //CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+                    //OperationContext.Current = prevOpContext; // Or set to null if you didn't capture the previous context
                 }
             }
             
