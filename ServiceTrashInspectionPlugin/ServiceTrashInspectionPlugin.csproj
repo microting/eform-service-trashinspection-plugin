@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>C:\Users\trole\Documents\Visual_Studio_2015\Projects\eform-windows-service\ServiceTestConsole\bin\Debug\Plugins\TrashInspection</OutputPath>
+    <OutputPath>../../../ServiceTestConsole/bin/Debug/Plugins/TrashInspection</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,10 +23,11 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
     <PackageReference Include="System.ComponentModel.Composition" Version="4.5.0" />
     <PackageReference Include="System.Security.Permissions" Version="4.5.0" />
-    <PackageReference Include="System.ServiceModel.Duplex" Version="4.4.*" />
-    <PackageReference Include="System.ServiceModel.Http" Version="4.4.*" />
-    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.4.*" />
-    <PackageReference Include="System.ServiceModel.Security" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.5.3" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.5.3" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.5.3" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.5.3" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,6 +6,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Collections.Generic;
 using System;
+using System.Text.RegularExpressions;
 //using System.Runtime.InteropServices;
 using System.Threading;
 //using eFormCore.Installers;
@@ -90,12 +91,18 @@ namespace ServiceTrashInspectionPlugin
             Console.WriteLine("TrashInspectionPlugin start called");
             try
             {
-                string connectionString;// = sdkConnectionString;
+                var dbNameSection = Regex.Match(sdkConnectionString, @"(Database=\w*;)").Groups[0].Value;
+                var dbPrefix = Regex.Match(sdkConnectionString, @"Database=(\d*)_").Groups[1].Value;
+                
+                var pluginDbName = $"Database={dbPrefix}_EFormTrashInspectionPn;";
+                string connectionString = sdkConnectionString.Replace(dbNameSection, pluginDbName);
+
+//                string connectionString;// = sdkConnectionString;
                 //if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 //{
-                connectionString =
-                    File.ReadAllText(serviceLocation + @"/Plugins/TrashInspection/netstandard2.0/sql_connection.txt")
-                        .Trim();
+//                connectionString =
+//                    File.ReadAllText(serviceLocation + @"/Plugins/TrashInspection/netstandard2.0/sql_connection.txt")
+//                        .Trim();
                 //}
                 //else
                 //{

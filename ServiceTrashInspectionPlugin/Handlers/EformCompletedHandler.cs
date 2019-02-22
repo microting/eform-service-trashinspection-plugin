@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Entities;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Factories;
 using Rebus.Handlers;
@@ -34,13 +35,13 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 trashInspectionCase.Status = 100;
                 trashInspectionCase.UpdatedAt = DateTime.Now;
                 trashInspectionCase.Version += 1;
-                await _dbContext.SaveChangesAsync();
+                _dbContext.SaveChanges();
 
                 TrashInspection trashInspection = _dbContext.TrashInspections.SingleOrDefault(x => x.Id == trashInspectionCase.TrashInspectionId);
                 trashInspection.Status = 100;
                 trashInspection.UpdatedAt = DateTime.Now;
                 trashInspection.Version += 1;
-                await _dbContext.SaveChangesAsync();
+                _dbContext.SaveChanges();
 
                 List<TrashInspectionCase> trashInspectionCases = _dbContext.TrashInspectionCases.Where(x => x.TrashInspectionId == trashInspection.Id).ToList();
                 foreach (TrashInspectionCase inspectionCase in trashInspectionCases)
@@ -50,37 +51,70 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         inspectionCase.WorkflowState = eFormShared.Constants.WorkflowStates.Retracted;
                         inspectionCase.UpdatedAt = DateTime.Now;
                         inspectionCase.Version += 1;
-                        await _dbContext.SaveChangesAsync();
+                        _dbContext.SaveChanges();
                     }
 
                 }
 
+                #region get settings
+                string callBackUrl = _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
+                    x.Name == "CallBackUrl")?.Value;                
+                Console.WriteLine("callBackUrl is : " + callBackUrl);
+                
+                string callBackCredentialDomain = _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
+                    x.Name == "CallBackCredentialDomain")?.Value;                
+                Console.WriteLine("callBackCredentialDomain is : " + callBackCredentialDomain);
+
+                string callbackCredentialUserName = _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
+                    x.Name == "CallbackCredentialUserName")?.Value;                
+                Console.WriteLine("callbackCredentialUserName is : " + callbackCredentialUserName);
+
+                string callbackCredentialPassword = _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
+                    x.Name == "CallbackCredentialPassword")?.Value;                
+                Console.WriteLine("callbackCredentialPassword is : " + callbackCredentialPassword);
+
+                string callbackCredentialAuthType = _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
+                    x.Name == "CallbackCredentialAuthType")?.Value;                
+                Console.WriteLine("callbackCredentialAuthType is : " + callbackCredentialAuthType);
+
+
+                #endregion
+                
+                
                 BasicHttpBinding basicHttpBinding =
                 new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
-                basicHttpBinding.Security.Transport.ClientCredentialType =
-                    HttpClientCredentialType.Ntlm;
+                if (callbackCredentialAuthType == "NTLM")
+                {
+                    basicHttpBinding.Security.Transport.ClientCredentialType =
+                        HttpClientCredentialType.Ntlm;
+                }
+                
 
                 ChannelFactory<MicrotingWS_Port> factory =
-                    new ChannelFactory<TrashInspectionServiceReference.MicrotingWS_Port>(basicHttpBinding,
+                    new ChannelFactory<MicrotingWS_Port>(basicHttpBinding,
                     new EndpointAddress(
-                        new Uri(@"...")));
-                //factory.Credentials.Windows.ClientCredential.Domain = domain;
-                //factory.Credentials.Windows.ClientCredential.UserName = user;
-                //factory.Credentials.Windows.ClientCredential.Password = pass;
+                        new Uri(callBackUrl)));
+                factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;
+                factory.Credentials.Windows.ClientCredential.UserName = callbackCredentialUserName;
+                factory.Credentials.Windows.ClientCredential.Password = callbackCredentialPassword;
+//                factory.Credentials.Windows.ClientCredential.UserName
                 MicrotingWS_Port serviceProxy = factory.CreateChannel();
                 ((ICommunicationObject)serviceProxy).Open();
-                //OperationContext opContext = new OperationContext((IClientChannel)serviceProxy);
-                //OperationContext prevOpContext = OperationContext.Current; // Optional if there's no way this might already be set
-                //OperationContext.Current = opContext;
 
                 try
                 {
-                    WeighingFromMicroting2 vejningFraMicroTing2 = new WeighingFromMicroting2(trashInspection.WeighingNumber, true);
-                    Task<WeighingFromMicroting2_Result> result = serviceProxy.WeighingFromMicroting2Async(vejningFraMicroTing2);
+                    WeighingFromMicroting2 weighingFromMicroting2 =
+                        new WeighingFromMicroting2(trashInspection.WeighingNumber, true);
+                    Task<WeighingFromMicroting2_Result> result =
+                        serviceProxy.WeighingFromMicroting2Async(weighingFromMicroting2);
 
 
                     Console.WriteLine("Result is " + result.Result.return_value);
 
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("We got the following error: " + ex.Message);
                 }
                 finally
                 {
