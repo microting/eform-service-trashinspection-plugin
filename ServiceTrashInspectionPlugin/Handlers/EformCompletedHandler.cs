@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
+using eFormData;
+using eFormShared;
 using Microsoft.EntityFrameworkCore;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Entities;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Factories;
@@ -88,7 +90,19 @@ namespace ServiceTrashInspectionPlugin.Handlers
                     basicHttpBinding.Security.Transport.ClientCredentialType =
                         HttpClientCredentialType.Ntlm;
                 }
-                
+
+                #region get case information
+
+                Case_Dto caseDto = _sdkCore.CaseLookupMUId(message.caseId);
+                var microtingUId = caseDto.MicrotingUId;
+                var microtingCheckUId = caseDto.CheckUId;
+                ReplyElement theCase = _sdkCore.CaseRead(microtingUId, microtingCheckUId);
+                CheckListValue dataElement = (CheckListValue)theCase.ElementList[0];
+                Field field = (Field)dataElement.DataItemList[1];
+                FieldValue fv = field.FieldValues[0];
+                String fieldValue = fv.Value;
+                bool inspectionApproved = (fieldValue == "1"); // If the value is 1 aka Approved, the value is true.
+                #endregion
 
                 ChannelFactory<MicrotingWS_Port> factory =
                     new ChannelFactory<MicrotingWS_Port>(basicHttpBinding,
@@ -104,7 +118,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 try
                 {
                     WeighingFromMicroting2 weighingFromMicroting2 =
-                        new WeighingFromMicroting2(trashInspection.WeighingNumber, true);
+                        new WeighingFromMicroting2(trashInspection.WeighingNumber, inspectionApproved);
                     Task<WeighingFromMicroting2_Result> result =
                         serviceProxy.WeighingFromMicroting2Async(weighingFromMicroting2);
 
@@ -119,7 +133,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 finally
                 {
                     // cleanup
-                    factory.Close();
+                     factory.Close();
                     ((ICommunicationObject)serviceProxy).Close();
                     // *** ENSURE CLEANUP *** \\
                     //CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);

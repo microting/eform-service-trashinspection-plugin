@@ -91,10 +91,20 @@ namespace ServiceTrashInspectionPlugin
             Console.WriteLine("TrashInspectionPlugin start called");
             try
             {
-                var dbNameSection = Regex.Match(sdkConnectionString, @"(Database=\w*;)").Groups[0].Value;
-                var dbPrefix = Regex.Match(sdkConnectionString, @"Database=(\d*)_").Groups[1].Value;
+                string dbNameSection;
+                string dbPrefix;
+                if (sdkConnectionString.ToLower().Contains("convert zero datetime"))
+                {
+                    dbNameSection = Regex.Match(sdkConnectionString, @"(Database=\w*;)").Groups[0].Value;
+                    dbPrefix = Regex.Match(sdkConnectionString, @"Database=(\d*)_").Groups[1].Value;
+                } else
+                {
+                    dbNameSection = Regex.Match(sdkConnectionString, @"(Initial Catalog=\w*;)").Groups[0].Value;
+                    dbPrefix = Regex.Match(sdkConnectionString, @"Initial Catalog=(\d*)_").Groups[1].Value;
+                }
                 
-                var pluginDbName = $"Database={dbPrefix}_EFormTrashInspectionPn;";
+                
+                string pluginDbName = $"Initial Catalog={dbPrefix}_EFormTrashInspectionPn;";
                 string connectionString = sdkConnectionString.Replace(dbNameSection, pluginDbName);
 
 //                string connectionString;// = sdkConnectionString;
