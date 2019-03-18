@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
 	<UseNETCoreGenerator>true</UseNETCoreGenerator>
   </PropertyGroup>
   <PropertyGroup>
@@ -15,8 +15,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.2" />
-    <PackageReference Include="Microting.eForm" Version="3.0.161" />
-    <PackageReference Include="Microting.eFormTrashInspectionBase" Version="1.1.32">
+    <PackageReference Include="Microting.eForm" Version="3.0.186" />
+    <PackageReference Include="Microting.eFormTrashInspectionBase" Version="1.1.39">
 	        <IncludeAssets>all</IncludeAssets>
 	</PackageReference>
     <PackageReference Include="Microting.WindowsService.BasePn" Version="1.1.13" />
