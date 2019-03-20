@@ -15,6 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
     <PackageReference Include="Microting.eForm" Version="3.0.195" />
     <PackageReference Include="Microting.eFormTrashInspectionBase" Version="1.1.41">
 	        <IncludeAssets>all</IncludeAssets>
