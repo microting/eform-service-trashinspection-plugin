@@ -104,7 +104,7 @@ namespace ServiceTrashInspectionPlugin
                 }
                 
                 
-                string pluginDbName = $"Initial Catalog={dbPrefix}_EFormTrashInspectionPn;";
+                string pluginDbName = $"Initial Catalog={dbPrefix}_eform-angular-trashinspection-plugin;";
                 string connectionString = sdkConnectionString.Replace(dbNameSection, pluginDbName);
 
 //                string connectionString;// = sdkConnectionString;
