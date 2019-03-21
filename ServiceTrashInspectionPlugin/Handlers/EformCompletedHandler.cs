@@ -99,15 +99,18 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 ReplyElement theCase = _sdkCore.CaseRead(microtingUId, microtingCheckUId);
                 CheckListValue dataElement = (CheckListValue)theCase.ElementList[0];
                 bool inspectionApproved = false;
+                Console.WriteLine("Trying to field the field with the approval value");
                 foreach (var field in dataElement.DataItemList)
                 {
                     Field f = (Field) field;
                     if (f.Label.Contains("Angiv om læs er Godkendt"))
                     {
-                        
+                        Console.WriteLine("We found the field!");
+                        Console.WriteLine($"The field is {f.Label}");
                         FieldValue fv = f.FieldValues[0];
                         String fieldValue = fv.Value;
                         inspectionApproved = (fieldValue == "1");
+                        Console.WriteLine($"We are setting the approved state to {inspectionApproved.ToString()}");
                     }
                 }
                 #endregion
