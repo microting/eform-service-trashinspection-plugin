@@ -98,10 +98,18 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 var microtingCheckUId = caseDto.CheckUId;
                 ReplyElement theCase = _sdkCore.CaseRead(microtingUId, microtingCheckUId);
                 CheckListValue dataElement = (CheckListValue)theCase.ElementList[0];
-                Field field = (Field)dataElement.DataItemList[1];
-                FieldValue fv = field.FieldValues[0];
-                String fieldValue = fv.Value;
-                bool inspectionApproved = (fieldValue == "1"); // If the value is 1 aka Approved, the value is true.
+                bool inspectionApproved = false;
+                foreach (var field in dataElement.DataItemList)
+                {
+                    Field f = (Field) field;
+                    if (f.Label.Contains("Angiv om læs er Godkendt"))
+                    {
+                        
+                        FieldValue fv = f.FieldValues[0];
+                        String fieldValue = fv.Value;
+                        inspectionApproved = (fieldValue == "1");
+                    }
+                }
                 #endregion
 
                 ChannelFactory<MicrotingWS_Port> factory =
