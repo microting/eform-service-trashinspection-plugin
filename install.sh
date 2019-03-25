@@ -18,4 +18,7 @@ su ubuntu -c \
 "dotnet publish ServiceTrashInspectionPlugin.sln -o out /p:Version=$GITVERSION --runtime linux-x64 --configuration Release"
 
 su ubuntu -c \
+"mkdir -p /var/www/microting/eform-debian-service/MicrotingService/MicrotingService/out/Plugins/"
+
+su ubuntu -c \
 "cp -av /var/www/microting/eform-service-trashinspection-plugin/ServiceTrashInspectionPlugin/out /var/www/microting/eform-debian-service/MicrotingService/MicrotingService/out/Plugins/ServiceTrashInspectionPlugin"
