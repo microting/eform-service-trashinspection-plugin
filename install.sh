@@ -3,7 +3,7 @@
 if [ ! -d "/var/www/microting/eform-service-trashinspection-plugin" ]; then
   cd /var/www/microting
   su ubuntu -c \
-  "git clone https://github.com/microting/eform-service-trashinspection-plugin.git"
+  "git clone https://github.com/microting/eform-service-trashinspection-plugin.git -b stable"
 fi
 
 cd /var/www/microting/eform-service-trashinspection-plugin
