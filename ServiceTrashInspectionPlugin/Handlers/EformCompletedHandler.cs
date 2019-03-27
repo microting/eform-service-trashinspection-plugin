@@ -33,6 +33,42 @@ namespace ServiceTrashInspectionPlugin.Handlers
             TrashInspectionCase trashInspectionCase = _dbContext.TrashInspectionCases.SingleOrDefault(x => x.SdkCaseId == message.caseId);
             if (trashInspectionCase != null)
             {
+                
+                #region get case information
+
+                Case_Dto caseDto = _sdkCore.CaseLookupMUId(message.caseId);
+                var microtingUId = caseDto.MicrotingUId;
+                var microtingCheckUId = caseDto.CheckUId;
+                ReplyElement theCase = _sdkCore.CaseRead(microtingUId, microtingCheckUId);
+                CheckListValue dataElement = (CheckListValue)theCase.ElementList[0];
+                bool inspectionApproved = false;
+                string approvedValue = "";
+                string comment = "";
+                Console.WriteLine("Trying to field the field with the approval value");
+                foreach (var field in dataElement.DataItemList)
+                {
+                    Field f = (Field) field;
+                    if (f.Label.Contains("Angiv om læs er Godkendt"))
+                    {
+                        Console.WriteLine($"The field is {f.Label}");
+                        FieldValue fv = f.FieldValues[0];
+                        String fieldValue = fv.Value;
+                        inspectionApproved = (fieldValue == "1");
+                        approvedValue = fieldValue;
+                        Console.WriteLine($"We are setting the approved state to {inspectionApproved.ToString()}");
+                    }
+
+                    if (f.Label.Contains("Kommentar"))
+                    {
+                        Console.WriteLine($"The field is {f.Label}");
+                        FieldValue fv = f.FieldValues[0];
+                        String fieldValue = fv.Value;
+                        comment = fieldValue;
+                        Console.WriteLine($"We are setting the comment to {comment.ToString()}");
+                    }
+                }
+                #endregion
+                
                 Console.WriteLine("TrashInspection: The incoming case is a trash inspection related case");
                 trashInspectionCase.Status = 100;
                 trashInspectionCase.UpdatedAt = DateTime.Now;
@@ -43,6 +79,9 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 trashInspection.Status = 100;
                 trashInspection.UpdatedAt = DateTime.Now;
                 trashInspection.Version += 1;
+                trashInspection.IsApproved = inspectionApproved;
+                trashInspection.Comment = comment;
+                trashInspection.ApprovedValue = approvedValue;
                 _dbContext.SaveChanges();
 
                 List<TrashInspectionCase> trashInspectionCases = _dbContext.TrashInspectionCases.Where(x => x.TrashInspectionId == trashInspection.Id).ToList();
@@ -91,29 +130,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         HttpClientCredentialType.Ntlm;
                 }
 
-                #region get case information
 
-                Case_Dto caseDto = _sdkCore.CaseLookupMUId(message.caseId);
-                var microtingUId = caseDto.MicrotingUId;
-                var microtingCheckUId = caseDto.CheckUId;
-                ReplyElement theCase = _sdkCore.CaseRead(microtingUId, microtingCheckUId);
-                CheckListValue dataElement = (CheckListValue)theCase.ElementList[0];
-                bool inspectionApproved = false;
-                Console.WriteLine("Trying to field the field with the approval value");
-                foreach (var field in dataElement.DataItemList)
-                {
-                    Field f = (Field) field;
-                    if (f.Label.Contains("Angiv om læs er Godkendt"))
-                    {
-                        Console.WriteLine("We found the field!");
-                        Console.WriteLine($"The field is {f.Label}");
-                        FieldValue fv = f.FieldValues[0];
-                        String fieldValue = fv.Value;
-                        inspectionApproved = (fieldValue == "1");
-                        Console.WriteLine($"We are setting the approved state to {inspectionApproved.ToString()}");
-                    }
-                }
-                #endregion
 
                 ChannelFactory<MicrotingWS_Port> factory =
                     new ChannelFactory<MicrotingWS_Port>(basicHttpBinding,
