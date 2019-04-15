@@ -3,14 +3,9 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Microting.WindowsService.BasePn;
 using System.ComponentModel.Composition;
-using System.IO;
-using System.Collections.Generic;
 using System;
 using System.Text.RegularExpressions;
-//using System.Runtime.InteropServices;
 using System.Threading;
-//using eFormCore.Installers;
-//using ServiceTrashInspectionPlugin.Infrastructure;
 using ServiceTrashInspectionPlugin.Installers;
 using ServiceTrashInspectionPlugin.Messages;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Factories;
@@ -107,19 +102,6 @@ namespace ServiceTrashInspectionPlugin
                 string pluginDbName = $"Initial Catalog={dbPrefix}_eform-angular-trashinspection-plugin;";
                 string connectionString = sdkConnectionString.Replace(dbNameSection, pluginDbName);
 
-//                string connectionString;// = sdkConnectionString;
-                //if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                //{
-//                connectionString =
-//                    File.ReadAllText(serviceLocation + @"/Plugins/TrashInspection/netstandard2.0/sql_connection.txt")
-//                        .Trim();
-                //}
-                //else
-                //{
-                //connectionString =
-                //    File.ReadAllText(serviceLocation + @"\Plugins\TrashInspection\sql_connection.txt")
-                //        .Trim();
-                //}
 
                 if (!_coreAvailable && !_coreStatChanging)
                 {
@@ -132,23 +114,6 @@ namespace ServiceTrashInspectionPlugin
                     if (string.IsNullOrEmpty(connectionString))
                         throw new ArgumentException("serverConnectionString is not allowed to be null or empty");
 
-                    //sqlController
-                    //                    _sqlController = new SqlController(connectionString);
-
-
-                    //check settings
-                    //                    if (_sqlController.SettingCheckAll().Count > 0)
-                    //                        throw new ArgumentException("Use AdminTool to setup database correctly. 'SettingCheckAll()' returned with errors");
-
-                    //                    if (_sqlController.SettingRead(SqlController.Settings.SdkConnectionString) == "...")
-                    //                        throw new ArgumentException("Use AdminTool to setup database correctly. microtingDb(connection string) not set, only default value found");
-                    //                    
-                    //                    try
-                    //                    {
-                    //                        _maxParallelism = int.Parse(_sqlController.SettingRead(SqlController.Settings.MaxParallelism));
-                    //                        _numberOfWorkers = int.Parse(_sqlController.SettingRead(SqlController.Settings.NumberOfWorkers));
-                    //                    }
-                    //                    catch { }
                     TrashInspectionPnContextFactory contextFactory = new TrashInspectionPnContextFactory();
 
                     _dbContext = contextFactory.CreateDbContext(new[] { connectionString });
@@ -157,14 +122,11 @@ namespace ServiceTrashInspectionPlugin
                     _coreAvailable = true;
                     _coreStatChanging = false;
 
-                    //                    string sdkCoreConnectionString = _sqlController.SettingRead(SqlController.Settings.SdkConnectionString);
                     startSdkCoreSqlOnly(sdkConnectionString);
 
                     _container = new WindsorContainer();
-                    //                    _container.Register(Component.For<SqlController>().Instance(_sqlController));
                     _container.Register(Component.For<TrashInspectionPnDbContext>().Instance(_dbContext));
                     _container.Register(Component.For<eFormCore.Core>().Instance(_sdkCore));
-//                    _container.Register(Component.For<Log>().Instance(log));
                     _container.Install(
                         new RebusHandlerInstaller()
                         , new RebusInstaller(connectionString, _maxParallelism, _numberOfWorkers)
@@ -178,7 +140,6 @@ namespace ServiceTrashInspectionPlugin
             }
             catch(Exception ex)
             {
-//                log.LogException(t.GetMethodName("Core"), "Start failed", ex, false);
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("Start failed " + ex.Message);
                 throw ex;
@@ -195,7 +156,6 @@ namespace ServiceTrashInspectionPlugin
                     _coreStatChanging = true;
 
                     _coreAvailable = false;
-//                    log.LogCritical(t.GetMethodName("Core"), "called");
 
                     int tries = 0;
                     while (_coreThreadRunning)
@@ -204,9 +164,6 @@ namespace ServiceTrashInspectionPlugin
                         _bus.Dispose();
                         tries++;
                     }
-
-//                    log.LogStandard(t.GetMethodName("Core"), "Core closed");
-//                    _sqlController = null;
                     _sdkCore.Close();
 
                     _coreStatChanging = false;
@@ -219,7 +176,6 @@ namespace ServiceTrashInspectionPlugin
             }
             catch (Exception ex)
             {
-//                log.LogException(t.GetMethodName("Core"), "Core failed to close", ex, false);
                 throw ex;
             }
             return true;

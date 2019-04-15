@@ -25,7 +25,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
             _sdkCore = sdkCore;
         }
 
-#pragma warning disable 1998
+        #pragma warning disable 1998
         public async Task Handle(eFormCompleted message)
         {
 
@@ -44,7 +44,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 bool inspectionApproved = false;
                 string approvedValue = "";
                 string comment = "";
-                Console.WriteLine("Trying to field the field with the approval value");
+                Console.WriteLine("Trying to find the field with the approval value");
                 foreach (var field in dataElement.DataItemList)
                 {
                     Field f = (Field) field;
