@@ -10,7 +10,6 @@ using ServiceTrashInspectionPlugin.Installers;
 using ServiceTrashInspectionPlugin.Messages;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Factories;
 using Microsoft.EntityFrameworkCore;
-using Microting.eFormTrashInspectionBase.Infrastructure.Data.Factories.Factories;
 
 namespace ServiceTrashInspectionPlugin
 {
