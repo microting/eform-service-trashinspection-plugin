@@ -213,8 +213,7 @@ namespace TrashInspectionServiceReference
         {
             if ((endpointConfiguration == EndpointConfiguration.MicrotingWS_Port))
             {
-                return new System.ServiceModel.EndpointAddress("http://navwebservice.odenserenovation.dk:7047/DynamicsNAV100UDV/WS/CRONUS Danmark" +
-                        " A%252FS/Codeunit/MicrotingWS");
+                return new System.ServiceModel.EndpointAddress("...");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
