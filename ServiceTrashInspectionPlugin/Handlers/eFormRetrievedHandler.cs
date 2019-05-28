@@ -28,16 +28,25 @@ namespace ServiceTrashInspectionPlugin.Handlers
             if (trashInspectionCase != null)
             {
                 Console.WriteLine("TrashInspection: The incoming case is a trash inspection related case");
-                trashInspectionCase.Status = 77;
-                trashInspectionCase.UpdatedAt = DateTime.Now;
-                trashInspectionCase.Version += 1;
-                await _dbContext.SaveChangesAsync();
+                if (trashInspectionCase.Status < 77)
+                {
+                    trashInspectionCase.Status = 77;
+                    trashInspectionCase.UpdatedAt = DateTime.Now;
+                    trashInspectionCase.Version += 1;
+                    await _dbContext.SaveChangesAsync();    
+                }
 
                 TrashInspection trashInspection = _dbContext.TrashInspections.SingleOrDefault(x => x.Id == trashInspectionCase.TrashInspectionId);
-                trashInspection.Status = 77;
-                trashInspection.UpdatedAt = DateTime.Now;
-                trashInspection.Version += 1;
-                await _dbContext.SaveChangesAsync();
+                if (trashInspection != null)
+                {
+                    if (trashInspection.Status < 77)
+                    {
+                        trashInspection.Status = 77;
+                        trashInspection.UpdatedAt = DateTime.Now;
+                        trashInspection.Version += 1;
+                        await _dbContext.SaveChangesAsync();                    
+                    }    
+                }
             }
         }
     }
