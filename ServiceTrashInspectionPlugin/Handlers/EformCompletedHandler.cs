@@ -132,7 +132,12 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         new ChannelFactory<MicrotingWS_Port>(basicHttpBinding,
                             new EndpointAddress(
                                 new Uri(callBackUrl)));
-                    factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;
+                    
+                    if (callBackCredentialDomain != "...")
+                    {
+                        factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;    
+                    }
+                    
                     factory.Credentials.Windows.ClientCredential.UserName = callbackCredentialUserName;
                     factory.Credentials.Windows.ClientCredential.Password = callbackCredentialPassword;
 
