@@ -92,24 +92,31 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 }
 
                 #region get settings
-                string callBackUrl = _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
-                    x.Name == "CallBackUrl")?.Value;                
+
+                string callBackUrl = _dbContext.PluginConfigurationValues
+                    .SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:callBackUrl").Value;
+//                _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
+//                    x.Name == "CallBackUrl")?.Value;                
                 Console.WriteLine("callBackUrl is : " + callBackUrl);
                 
-                string callBackCredentialDomain = _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
-                    x.Name == "CallBackCredentialDomain")?.Value;                
+                string callBackCredentialDomain = _dbContext.PluginConfigurationValues.SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:CallBackCredentialDomain").Value;
+//                _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
+//                    x.Name == "CallBackCredentialDomain")?.Value;                
                 Console.WriteLine("callBackCredentialDomain is : " + callBackCredentialDomain);
 
-                string callbackCredentialUserName = _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
-                    x.Name == "CallbackCredentialUserName")?.Value;                
+                string callbackCredentialUserName = _dbContext.PluginConfigurationValues.SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:callbackCredentialUserName").Value;
+//                _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
+//                    x.Name == "callbackCredentialUserName")?.Value;                
                 Console.WriteLine("callbackCredentialUserName is : " + callbackCredentialUserName);
 
-                string callbackCredentialPassword = _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
-                    x.Name == "CallbackCredentialPassword")?.Value;                
+                string callbackCredentialPassword = _dbContext.PluginConfigurationValues.SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:CallbackCredentialPassword").Value;
+//                _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
+//                    x.Name == "CallbackCredentialPassword")?.Value;                
                 Console.WriteLine("callbackCredentialPassword is : " + callbackCredentialPassword);
 
-                string callbackCredentialAuthType = _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
-                    x.Name == "CallbackCredentialAuthType")?.Value;                
+                string callbackCredentialAuthType = _dbContext.PluginConfigurationValues.SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:CallbackCredentialAuthType").Value;
+//                _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
+//                    x.Name == "CallbackCredentialAuthType")?.Value;                
                 Console.WriteLine("callbackCredentialAuthType is : " + callbackCredentialAuthType);
 
 
