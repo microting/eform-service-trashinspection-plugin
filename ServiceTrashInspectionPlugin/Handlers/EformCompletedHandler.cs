@@ -71,18 +71,14 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 
                 Console.WriteLine("TrashInspection: The incoming case is a trash inspection related case");
                 trashInspectionCase.Status = 100;
-                trashInspectionCase.UpdatedAt = DateTime.Now;
-                trashInspectionCase.Version += 1;
-                _dbContext.SaveChanges();
+                trashInspectionCase.Update(_dbContext);
 
                 TrashInspection trashInspection = _dbContext.TrashInspections.SingleOrDefault(x => x.Id == trashInspectionCase.TrashInspectionId);
                 trashInspection.Status = 100;
-                trashInspection.UpdatedAt = DateTime.Now;
-                trashInspection.Version += 1;
                 trashInspection.IsApproved = inspectionApproved;
                 trashInspection.Comment = comment;
                 trashInspection.ApprovedValue = approvedValue;
-                _dbContext.SaveChanges();
+                trashInspection.Update(_dbContext);
 
                 List<TrashInspectionCase> trashInspectionCases = _dbContext.TrashInspectionCases.Where(x => x.TrashInspectionId == trashInspection.Id).ToList();
                 foreach (TrashInspectionCase inspectionCase in trashInspectionCases)
@@ -90,9 +86,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                     if (_sdkCore.CaseDelete(inspectionCase.SdkCaseId))
                     {
                         inspectionCase.WorkflowState = eFormShared.Constants.WorkflowStates.Retracted;
-                        inspectionCase.UpdatedAt = DateTime.Now;
-                        inspectionCase.Version += 1;
-                        _dbContext.SaveChanges();
+                        inspectionCase.Update(_dbContext);
                     }
 
                 }

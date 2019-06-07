@@ -31,9 +31,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 if (trashInspectionCase.Status < 77)
                 {
                     trashInspectionCase.Status = 77;
-                    trashInspectionCase.UpdatedAt = DateTime.Now;
-                    trashInspectionCase.Version += 1;
-                    await _dbContext.SaveChangesAsync();    
+                    trashInspectionCase.Update(_dbContext);
                 }
 
                 TrashInspection trashInspection = _dbContext.TrashInspections.SingleOrDefault(x => x.Id == trashInspectionCase.TrashInspectionId);
@@ -42,9 +40,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                     if (trashInspection.Status < 77)
                     {
                         trashInspection.Status = 77;
-                        trashInspection.UpdatedAt = DateTime.Now;
-                        trashInspection.Version += 1;
-                        await _dbContext.SaveChangesAsync();                    
+                        trashInspection.Update(_dbContext);
                     }    
                 }
             }
