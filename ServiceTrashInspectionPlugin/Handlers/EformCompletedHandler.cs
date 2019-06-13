@@ -125,50 +125,101 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 
                 BasicHttpBinding basicHttpBinding =
                 new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
-                if (callbackCredentialAuthType == "NTLM")
+
+                ChannelFactory<MicrotingWS_Port> factory;
+                MicrotingWS_Port serviceProxy;
+
+                switch (callbackCredentialAuthType)
                 {
-                    basicHttpBinding.Security.Transport.ClientCredentialType =
+                    case "NTML":
+                        basicHttpBinding.Security.Transport.ClientCredentialType =
                         HttpClientCredentialType.Ntlm;
-                    ChannelFactory<MicrotingWS_Port> factory =
-                        new ChannelFactory<MicrotingWS_Port>(basicHttpBinding,
-                            new EndpointAddress(
-                                new Uri(callBackUrl)));
-                    
-                    if (callBackCredentialDomain != "...")
-                    {
-                        factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;    
-                    }
-                    
-                    factory.Credentials.Windows.ClientCredential.UserName = callbackCredentialUserName;
-                    factory.Credentials.Windows.ClientCredential.Password = callbackCredentialPassword;
+                        factory =
+                            new ChannelFactory<MicrotingWS_Port>(basicHttpBinding,
+                                new EndpointAddress(
+                                    new Uri(callBackUrl)));
+                        
+                        if (callBackCredentialDomain != "...")
+                        {
+                            factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;    
+                        }
+                        
+                        factory.Credentials.Windows.ClientCredential.UserName = callbackCredentialUserName;
+                        factory.Credentials.Windows.ClientCredential.Password = callbackCredentialPassword;
 
-                    MicrotingWS_Port serviceProxy = factory.CreateChannel();
-                    ((ICommunicationObject)serviceProxy).Open();
+                        serviceProxy = factory.CreateChannel();
+                        ((ICommunicationObject)serviceProxy).Open();
 
-                    try
-                    {
-                        WeighingFromMicroting2 weighingFromMicroting2 =
-                            new WeighingFromMicroting2(trashInspection.WeighingNumber, inspectionApproved);
-                        Task<WeighingFromMicroting2_Result> result =
-                            serviceProxy.WeighingFromMicroting2Async(weighingFromMicroting2);
+                        try
+                        {
+                            WeighingFromMicroting2 weighingFromMicroting2 =
+                                new WeighingFromMicroting2(trashInspection.WeighingNumber, inspectionApproved);
+                            Task<WeighingFromMicroting2_Result> result =
+                                serviceProxy.WeighingFromMicroting2Async(weighingFromMicroting2);
 
 
-                        Console.WriteLine("Result is " + result.Result.return_value);
+                            Console.WriteLine("Result is " + result.Result.return_value);
 
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("We got the following error: " + ex.Message);
-                    }
-                    finally
-                    {
-                        // cleanup
-                        factory.Close();
-                        ((ICommunicationObject)serviceProxy).Close();
-                        // *** ENSURE CLEANUP *** \\
-                        //CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-                        //OperationContext.Current = prevOpContext; // Or set to null if you didn't capture the previous context
-                    }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("We got the following error: " + ex.Message);
+                        }
+                        finally
+                        {
+                            // cleanup
+                            factory.Close();
+                            ((ICommunicationObject)serviceProxy).Close();
+                            // *** ENSURE CLEANUP *** \\
+                            //CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+                            //OperationContext.Current = prevOpContext; // Or set to null if you didn't capture the previous context
+                        }
+                        break;
+                    case "basic":
+                    default:
+                        basicHttpBinding.Security.Transport.ClientCredentialType =
+                        HttpClientCredentialType.Basic;
+                        factory =
+                            new ChannelFactory<MicrotingWS_Port>(basicHttpBinding,
+                                new EndpointAddress(
+                                    new Uri(callBackUrl)));
+                        
+                        if (callBackCredentialDomain != "...")
+                        {
+                            factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;    
+                        }
+                        
+                        factory.Credentials.Windows.ClientCredential.UserName = callbackCredentialUserName;
+                        factory.Credentials.Windows.ClientCredential.Password = callbackCredentialPassword;
+
+                        serviceProxy = factory.CreateChannel();
+                        ((ICommunicationObject)serviceProxy).Open();
+
+                        try
+                        {
+                            WeighingFromMicroting2 weighingFromMicroting2 =
+                                new WeighingFromMicroting2(trashInspection.WeighingNumber, inspectionApproved);
+                            Task<WeighingFromMicroting2_Result> result =
+                                serviceProxy.WeighingFromMicroting2Async(weighingFromMicroting2);
+
+
+                            Console.WriteLine("Result is " + result.Result.return_value);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("We got the following error: " + ex.Message);
+                        }
+                        finally
+                        {
+                            // cleanup
+                            factory.Close();
+                            ((ICommunicationObject)serviceProxy).Close();
+                            // *** ENSURE CLEANUP *** \\
+                            //CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+                            //OperationContext.Current = prevOpContext; // Or set to null if you didn't capture the previous context
+                        }
+                        break;
                 }
             }
             
