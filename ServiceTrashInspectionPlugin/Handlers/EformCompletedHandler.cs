@@ -181,7 +181,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         
                         BasicHttpBinding basicHttpBinding =
                             new BasicHttpBinding();
-                        basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
+                        basicHttpBinding.Security.Mode = BasicHttpSecurityMode.TransportCredentialOnly;
                         basicHttpBinding.Security.Transport.ClientCredentialType =
                         HttpClientCredentialType.Basic;
                         factory =
