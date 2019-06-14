@@ -123,8 +123,6 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 #endregion
                 
                 
-                BasicHttpBinding basicHttpBinding =
-                new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
 
                 ChannelFactory<MicrotingWS_Port> factory;
                 MicrotingWS_Port serviceProxy;
@@ -132,10 +130,13 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 switch (callbackCredentialAuthType)
                 {
                     case "NTML":
-                        basicHttpBinding.Security.Transport.ClientCredentialType =
+                    
+                        BasicHttpBinding basicHttpBindingntlm =
+                            new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+                        basicHttpBindingntlm.Security.Transport.ClientCredentialType =
                         HttpClientCredentialType.Ntlm;
                         factory =
-                            new ChannelFactory<MicrotingWS_Port>(basicHttpBinding,
+                            new ChannelFactory<MicrotingWS_Port>(basicHttpBindingntlm,
                                 new EndpointAddress(
                                     new Uri(callBackUrl)));
                         
@@ -177,6 +178,10 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         break;
                     case "basic":
                     default:
+                        
+                        BasicHttpBinding basicHttpBinding =
+                            new BasicHttpBinding();
+                        basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
                         basicHttpBinding.Security.Transport.ClientCredentialType =
                         HttpClientCredentialType.Basic;
                         factory =
@@ -188,9 +193,12 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         {
                             factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;    
                         }
+
+                        factory.Credentials.UserName.UserName = callbackCredentialUserName;
+                        factory.Credentials.UserName.Password = callbackCredentialPassword;
                         
-                        factory.Credentials.Windows.ClientCredential.UserName = callbackCredentialUserName;
-                        factory.Credentials.Windows.ClientCredential.Password = callbackCredentialPassword;
+//                        factory.Credentials.Windows.ClientCredential.UserName = callbackCredentialUserName;
+//                        factory.Credentials.Windows.ClientCredential.Password = callbackCredentialPassword;
 
                         serviceProxy = factory.CreateChannel();
                         ((ICommunicationObject)serviceProxy).Open();
