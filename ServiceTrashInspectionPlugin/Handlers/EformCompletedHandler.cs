@@ -74,112 +74,73 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 trashInspectionCase.Update(_dbContext);
 
                 TrashInspection trashInspection = _dbContext.TrashInspections.SingleOrDefault(x => x.Id == trashInspectionCase.TrashInspectionId);
-                trashInspection.Status = 100;
-                trashInspection.IsApproved = inspectionApproved;
-                trashInspection.Comment = comment;
-                trashInspection.ApprovedValue = approvedValue;
-                trashInspection.Update(_dbContext);
-
-                List<TrashInspectionCase> trashInspectionCases = _dbContext.TrashInspectionCases.Where(x => x.TrashInspectionId == trashInspection.Id).ToList();
-                foreach (TrashInspectionCase inspectionCase in trashInspectionCases)
+                if (trashInspection != null)
                 {
-                    if (_sdkCore.CaseDelete(inspectionCase.SdkCaseId))
+                    trashInspection.Status = 100;
+                    trashInspection.IsApproved = inspectionApproved;
+                    trashInspection.Comment = comment;
+                    trashInspection.ApprovedValue = approvedValue;
+                    trashInspection.Update(_dbContext);
+
+                    List<TrashInspectionCase> trashInspectionCases = _dbContext.TrashInspectionCases
+                        .Where(x => x.TrashInspectionId == trashInspection.Id).ToList();
+                    foreach (TrashInspectionCase inspectionCase in trashInspectionCases)
                     {
-                        inspectionCase.WorkflowState = eFormShared.Constants.WorkflowStates.Retracted;
-                        inspectionCase.Update(_dbContext);
+                        if (_sdkCore.CaseDelete(inspectionCase.SdkCaseId))
+                        {
+                            inspectionCase.WorkflowState = eFormShared.Constants.WorkflowStates.Retracted;
+                            inspectionCase.Update(_dbContext);
+                        }
                     }
 
+                    #region get settings
+
+                    string callBackUrl = _dbContext.PluginConfigurationValues
+                        .SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:callBackUrl")?.Value;
+                    Console.WriteLine("callBackUrl is : " + callBackUrl);
+
+                    string callBackCredentialDomain = _dbContext.PluginConfigurationValues.SingleOrDefault(x =>
+                        x.Name == "TrashInspectionBaseSettings:CallBackCredentialDomain")?.Value;
+                    Console.WriteLine("callBackCredentialDomain is : " + callBackCredentialDomain);
+
+                    string callbackCredentialUserName = _dbContext.PluginConfigurationValues.SingleOrDefault(x =>
+                        x.Name == "TrashInspectionBaseSettings:callbackCredentialUserName")?.Value;
+                    Console.WriteLine("callbackCredentialUserName is : " + callbackCredentialUserName);
+
+                    string callbackCredentialPassword = _dbContext.PluginConfigurationValues.SingleOrDefault(x =>
+                        x.Name == "TrashInspectionBaseSettings:CallbackCredentialPassword")?.Value;
+                    Console.WriteLine("callbackCredentialPassword is : " + callbackCredentialPassword);
+
+                    string callbackCredentialAuthType = _dbContext.PluginConfigurationValues.SingleOrDefault(x =>
+                        x.Name == "TrashInspectionBaseSettings:CallbackCredentialAuthType")?.Value;
+                    Console.WriteLine("callbackCredentialAuthType is : " + callbackCredentialAuthType);
+
+                    #endregion
+
+                    switch (callbackCredentialAuthType)
+                    {
+                        case "NTML":
+                            callUrlNtlmAuth(callBackUrl, callBackCredentialDomain, callbackCredentialUserName,
+                                callbackCredentialPassword, trashInspection, inspectionApproved);
+                            break;
+                        case "basic":
+                        default:
+                            callUrlBaiscAuth(callBackUrl, callBackCredentialDomain, callbackCredentialUserName,
+                                callbackCredentialPassword, trashInspection, inspectionApproved);
+                            break;
+                    }
                 }
+            }
+            
+        }
 
-                #region get settings
+        private void callUrlBaiscAuth(string callBackUrl, string callBackCredentialDomain, 
+            string callbackCredentialUserName, string callbackCredentialPassword, TrashInspection trashInspection, bool inspectionApproved)
+        {
 
-                string callBackUrl = _dbContext.PluginConfigurationValues
-                    .SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:callBackUrl").Value;
-//                _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
-//                    x.Name == "CallBackUrl")?.Value;                
-                Console.WriteLine("callBackUrl is : " + callBackUrl);
-                
-                string callBackCredentialDomain = _dbContext.PluginConfigurationValues.SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:CallBackCredentialDomain").Value;
-//                _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
-//                    x.Name == "CallBackCredentialDomain")?.Value;                
-                Console.WriteLine("callBackCredentialDomain is : " + callBackCredentialDomain);
-
-                string callbackCredentialUserName = _dbContext.PluginConfigurationValues.SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:callbackCredentialUserName").Value;
-//                _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
-//                    x.Name == "callbackCredentialUserName")?.Value;                
-                Console.WriteLine("callbackCredentialUserName is : " + callbackCredentialUserName);
-
-                string callbackCredentialPassword = _dbContext.PluginConfigurationValues.SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:CallbackCredentialPassword").Value;
-//                _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
-//                    x.Name == "CallbackCredentialPassword")?.Value;                
-                Console.WriteLine("callbackCredentialPassword is : " + callbackCredentialPassword);
-
-                string callbackCredentialAuthType = _dbContext.PluginConfigurationValues.SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:CallbackCredentialAuthType").Value;
-//                _dbContext.TrashInspectionPnSettings.SingleOrDefault(x => 
-//                    x.Name == "CallbackCredentialAuthType")?.Value;                
-                Console.WriteLine("callbackCredentialAuthType is : " + callbackCredentialAuthType);
-
-
-                #endregion
-                
-                
-
-                ChannelFactory<MicrotingWS_Port> factory;
-                MicrotingWS_Port serviceProxy;
-
-                switch (callbackCredentialAuthType)
-                {
-                    case "NTML":
-                    
-                        BasicHttpBinding basicHttpBindingntlm =
-                            new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
-                        basicHttpBindingntlm.Security.Transport.ClientCredentialType =
-                        HttpClientCredentialType.Ntlm;
-                        factory =
-                            new ChannelFactory<MicrotingWS_Port>(basicHttpBindingntlm,
-                                new EndpointAddress(
-                                    new Uri(callBackUrl)));
-                        
-                        if (callBackCredentialDomain != "...")
-                        {
-                            factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;    
-                        }
-                        
-                        factory.Credentials.Windows.ClientCredential.UserName = callbackCredentialUserName;
-                        factory.Credentials.Windows.ClientCredential.Password = callbackCredentialPassword;
-
-                        serviceProxy = factory.CreateChannel();
-                        ((ICommunicationObject)serviceProxy).Open();
-
-                        try
-                        {
-                            WeighingFromMicroting2 weighingFromMicroting2 =
-                                new WeighingFromMicroting2(trashInspection.WeighingNumber, inspectionApproved);
-                            Task<WeighingFromMicroting2_Result> result =
-                                serviceProxy.WeighingFromMicroting2Async(weighingFromMicroting2);
-
-
-                            Console.WriteLine("Result is " + result.Result.return_value);
-
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("We got the following error: " + ex.Message);
-                        }
-                        finally
-                        {
-                            // cleanup
-                            factory.Close();
-                            ((ICommunicationObject)serviceProxy).Close();
-                            // *** ENSURE CLEANUP *** \\
-                            //CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-                            //OperationContext.Current = prevOpContext; // Or set to null if you didn't capture the previous context
-                        }
-                        break;
-                    case "basic":
-                    default:
-                        
-                        BasicHttpBinding basicHttpBinding =
+            ChannelFactory<MicrotingWS_Port> factory;
+            MicrotingWS_Port serviceProxy;
+            BasicHttpBinding basicHttpBinding =
                             new BasicHttpBinding();
                         basicHttpBinding.Security.Mode = BasicHttpSecurityMode.TransportCredentialOnly;
                         basicHttpBinding.Security.Transport.ClientCredentialType =
@@ -227,10 +188,57 @@ namespace ServiceTrashInspectionPlugin.Handlers
                             //CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
                             //OperationContext.Current = prevOpContext; // Or set to null if you didn't capture the previous context
                         }
-                        break;
-                }
-            }
-            
+        }
+
+        private void callUrlNtlmAuth(string callBackUrl, string callBackCredentialDomain, string callbackCredentialUserName, string callbackCredentialPassword, TrashInspection trashInspection, bool inspectionApproved)
+        {
+
+            ChannelFactory<MicrotingWS_Port> factory;
+            MicrotingWS_Port serviceProxy;
+            BasicHttpBinding basicHttpBindingntlm =
+                            new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+                        basicHttpBindingntlm.Security.Transport.ClientCredentialType =
+                        HttpClientCredentialType.Ntlm;
+                        factory =
+                            new ChannelFactory<MicrotingWS_Port>(basicHttpBindingntlm,
+                                new EndpointAddress(
+                                    new Uri(callBackUrl)));
+                        
+                        if (callBackCredentialDomain != "...")
+                        {
+                            factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;    
+                        }
+                        
+                        factory.Credentials.Windows.ClientCredential.UserName = callbackCredentialUserName;
+                        factory.Credentials.Windows.ClientCredential.Password = callbackCredentialPassword;
+
+                        serviceProxy = factory.CreateChannel();
+                        ((ICommunicationObject)serviceProxy).Open();
+
+                        try
+                        {
+                            WeighingFromMicroting2 weighingFromMicroting2 =
+                                new WeighingFromMicroting2(trashInspection.WeighingNumber, inspectionApproved);
+                            Task<WeighingFromMicroting2_Result> result =
+                                serviceProxy.WeighingFromMicroting2Async(weighingFromMicroting2);
+
+
+                            Console.WriteLine("Result is " + result.Result.return_value);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("We got the following error: " + ex.Message);
+                        }
+                        finally
+                        {
+                            // cleanup
+                            factory.Close();
+                            ((ICommunicationObject)serviceProxy).Close();
+                            // *** ENSURE CLEANUP *** \\
+                            //CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+                            //OperationContext.Current = prevOpContext; // Or set to null if you didn't capture the previous context
+                        }
         }
     }
 }
