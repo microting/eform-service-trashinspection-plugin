@@ -80,6 +80,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                     trashInspection.IsApproved = inspectionApproved;
                     trashInspection.Comment = comment;
                     trashInspection.ApprovedValue = approvedValue;
+                    trashInspection.InspectionDone = true;
                     trashInspection.Update(_dbContext);
 
                     List<TrashInspectionCase> trashInspectionCases = _dbContext.TrashInspectionCases
