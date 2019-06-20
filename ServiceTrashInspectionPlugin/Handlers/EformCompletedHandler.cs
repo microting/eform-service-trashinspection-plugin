@@ -120,7 +120,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
 
                     switch (callbackCredentialAuthType)
                     {
-                        case "NTML":
+                        case "NTLM":
                             callUrlNtlmAuth(callBackUrl, callBackCredentialDomain, callbackCredentialUserName,
                                 callbackCredentialPassword, trashInspection, inspectionApproved);
                             break;
