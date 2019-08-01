@@ -23,9 +23,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using eFormData;
-using eFormShared;
-using Microsoft.EntityFrameworkCore;
+using Microting.eForm.Dto;
+using Microting.eForm.Infrastructure.Constants;
+using Microting.eForm.Infrastructure.Models;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Entities;
 using Rebus.Handlers;
@@ -109,7 +109,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                     {
                         if (_sdkCore.CaseDelete(inspectionCase.SdkCaseId))
                         {
-                            inspectionCase.WorkflowState = eFormShared.Constants.WorkflowStates.Retracted;
+                            inspectionCase.WorkflowState = Constants.WorkflowStates.Retracted;
                             inspectionCase.Update(_dbContext);
                         }
                     }

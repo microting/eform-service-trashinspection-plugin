@@ -30,6 +30,7 @@ using ServiceTrashInspectionPlugin.Installers;
 using ServiceTrashInspectionPlugin.Messages;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Factories;
 using Microsoft.EntityFrameworkCore;
+using Microting.eForm.Dto;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data;
 
 namespace ServiceTrashInspectionPlugin
@@ -57,7 +58,7 @@ namespace ServiceTrashInspectionPlugin
 
         public void CaseCompleted(object sender, EventArgs args)
         {
-            eFormShared.Case_Dto trigger = (eFormShared.Case_Dto)sender;
+            Case_Dto trigger = (Case_Dto)sender;
 
             string CaseId = trigger.MicrotingUId;
             _bus.SendLocal(new eFormCompleted(CaseId));
@@ -85,7 +86,7 @@ namespace ServiceTrashInspectionPlugin
 
         public void eFormRetrived(object sender, EventArgs args)
         {
-            eFormShared.Case_Dto trigger = (eFormShared.Case_Dto)sender;
+            Case_Dto trigger = (Case_Dto)sender;
 
             string CaseId = trigger.MicrotingUId;
             _bus.SendLocal(new eFormRetrieved(CaseId));
