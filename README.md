@@ -4,6 +4,16 @@
 
 ## WARNINIG! NOT TO BE USED SEPERATLY
 
+# Plugin automatic installation
+
+This is expection you to have eform-angular-frontend installed as default in /var/www/microting/
+
+```
+cd /var/www/microting/
+curl -s -L https://raw.githubusercontent.com/microting/eform-service-trashinspection-plugin/stable/install.sh | sudo bash
+```
+
+
 ## Contributing
 
 1. Do a fork
