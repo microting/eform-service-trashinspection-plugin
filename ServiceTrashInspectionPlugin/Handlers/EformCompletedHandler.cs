@@ -78,7 +78,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         Console.WriteLine($"We are setting the approved state to {inspectionApproved.ToString()}");
                     }
 
-                    if (f.Label.Contains("Kommentar"))
+                    if (f.Label.Equals("Kommentar"))
                     {
                         Console.WriteLine($"The field is {f.Label}");
                         FieldValue fv = f.FieldValues[0];
