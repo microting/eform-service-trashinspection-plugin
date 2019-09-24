@@ -22,9 +22,9 @@ namespace ServiceTrashInspectionPlugin.Messages
 {
     public class eFormRetrieved
     {
-        public string caseId { get; protected set; }
+        public int caseId { get; protected set; }
 
-        public eFormRetrieved(string caseId)
+        public eFormRetrieved(int caseId)
         {
             this.caseId = caseId;
         }

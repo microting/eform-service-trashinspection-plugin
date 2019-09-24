@@ -44,7 +44,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
         public async Task Handle(eFormRetrieved message)
         {
             Console.WriteLine("TrashInspection: We got a message : " + message.caseId);
-            TrashInspectionCase trashInspectionCase = _dbContext.TrashInspectionCases.SingleOrDefault(x => x.SdkCaseId == message.caseId);
+            TrashInspectionCase trashInspectionCase = _dbContext.TrashInspectionCases.SingleOrDefault(x => x.SdkCaseId == message.caseId.ToString());
             if (trashInspectionCase != null)
             {
                 Console.WriteLine("TrashInspection: The incoming case is a trash inspection related case");

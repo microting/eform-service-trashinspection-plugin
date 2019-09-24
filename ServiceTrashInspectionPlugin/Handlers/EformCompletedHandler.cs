@@ -50,7 +50,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
         {
 
             Console.WriteLine("TrashInspection: We got a message : " + message.caseId);
-            TrashInspectionCase trashInspectionCase = _dbContext.TrashInspectionCases.SingleOrDefault(x => x.SdkCaseId == message.caseId);
+            TrashInspectionCase trashInspectionCase = _dbContext.TrashInspectionCases.SingleOrDefault(x => x.SdkCaseId == message.caseId.ToString());
             if (trashInspectionCase != null)
             {
                 
@@ -59,7 +59,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 Case_Dto caseDto = _sdkCore.CaseLookupMUId(message.caseId);
                 var microtingUId = caseDto.MicrotingUId;
                 var microtingCheckUId = caseDto.CheckUId;
-                ReplyElement theCase = _sdkCore.CaseRead(microtingUId, microtingCheckUId);
+                ReplyElement theCase = _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId);
                 CheckListValue dataElement = (CheckListValue)theCase.ElementList[0];
                 bool inspectionApproved = false;
                 string approvedValue = "";
@@ -107,7 +107,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         .Where(x => x.TrashInspectionId == trashInspection.Id).ToList();
                     foreach (TrashInspectionCase inspectionCase in trashInspectionCases)
                     {
-                        if (_sdkCore.CaseDelete(inspectionCase.SdkCaseId))
+                        if (_sdkCore.CaseDelete(int.Parse(inspectionCase.SdkCaseId)))
                         {
                             inspectionCase.WorkflowState = Constants.WorkflowStates.Retracted;
                             inspectionCase.Update(_dbContext);

@@ -60,8 +60,8 @@ namespace ServiceTrashInspectionPlugin
         {
             Case_Dto trigger = (Case_Dto)sender;
 
-            string CaseId = trigger.MicrotingUId;
-            _bus.SendLocal(new eFormCompleted(CaseId));
+            int? caseId = trigger.MicrotingUId;
+            if (caseId != null) _bus.SendLocal(new eFormCompleted((int) caseId));
         }
 
         public void CaseDeleted(object sender, EventArgs args)
@@ -88,8 +88,8 @@ namespace ServiceTrashInspectionPlugin
         {
             Case_Dto trigger = (Case_Dto)sender;
 
-            string CaseId = trigger.MicrotingUId;
-            _bus.SendLocal(new eFormRetrieved(CaseId));
+            int? caseId = trigger.MicrotingUId;
+            if (caseId != null) _bus.SendLocal(new eFormRetrieved((int) caseId));
         }
 
         public void NotificationNotFound(object sender, EventArgs args)
