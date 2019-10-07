@@ -29,6 +29,7 @@ using Microting.eForm.Infrastructure.Models;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Entities;
 using Rebus.Handlers;
+using ServiceTrashInspectionPlugin.Infrastructure.Helpers;
 using ServiceTrashInspectionPlugin.Messages;
 using TrashInspectionServiceReference;
 
@@ -39,9 +40,9 @@ namespace ServiceTrashInspectionPlugin.Handlers
         private readonly eFormCore.Core _sdkCore;
         private readonly TrashInspectionPnDbContext _dbContext;
 
-        public eFormCompletedHandler(eFormCore.Core sdkCore, TrashInspectionPnDbContext dbContext)
+        public eFormCompletedHandler(eFormCore.Core sdkCore, DbContextHelper dbContextHelper)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContextHelper.GetDbContext();
             _sdkCore = sdkCore;
         }
 

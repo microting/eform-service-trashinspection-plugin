@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Entities;
 using Rebus.Handlers;
+using ServiceTrashInspectionPlugin.Infrastructure.Helpers;
 using ServiceTrashInspectionPlugin.Messages;
 
 namespace ServiceTrashInspectionPlugin.Handlers
@@ -34,9 +35,9 @@ namespace ServiceTrashInspectionPlugin.Handlers
         private readonly eFormCore.Core _sdkCore;
         private readonly TrashInspectionPnDbContext _dbContext;
 
-        public eFormRetrievedHandler(eFormCore.Core sdkCore, TrashInspectionPnDbContext dbContext)
+        public eFormRetrievedHandler(eFormCore.Core sdkCore, DbContextHelper dbContextHelper)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContextHelper.GetDbContext();
             _sdkCore = sdkCore;
         }
 

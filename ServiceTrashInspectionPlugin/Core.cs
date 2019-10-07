@@ -32,6 +32,8 @@ using Microting.eFormTrashInspectionBase.Infrastructure.Data.Factories;
 using Microsoft.EntityFrameworkCore;
 using Microting.eForm.Dto;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data;
+using ServiceTrashInspectionPlugin.Handlers;
+using ServiceTrashInspectionPlugin.Infrastructure.Helpers;
 
 namespace ServiceTrashInspectionPlugin
 {
@@ -54,6 +56,7 @@ namespace ServiceTrashInspectionPlugin
         private int _maxParallelism = 1;
         private int _numberOfWorkers = 1;
         private TrashInspectionPnDbContext _dbContext;
+        private DbContextHelper _dbContextHelper;
         #endregion
 
         public void CaseCompleted(object sender, EventArgs args)
@@ -142,11 +145,12 @@ namespace ServiceTrashInspectionPlugin
 
                     _coreAvailable = true;
                     _coreStatChanging = false;
+                    _dbContextHelper = new DbContextHelper(connectionString);
 
                     startSdkCoreSqlOnly(sdkConnectionString);
 
                     _container = new WindsorContainer();
-                    _container.Register(Component.For<TrashInspectionPnDbContext>().Instance(_dbContext));
+                    _container.Register(Component.For<DbContextHelper>().Instance(_dbContextHelper));
                     _container.Register(Component.For<eFormCore.Core>().Instance(_sdkCore));
                     _container.Install(
                         new RebusHandlerInstaller()
