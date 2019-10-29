@@ -52,7 +52,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 if (trashInspectionCase.Status < 77)
                 {
                     trashInspectionCase.Status = 77;
-                    trashInspectionCase.Update(_dbContext);
+                    await trashInspectionCase.Update(_dbContext);
                 }
 
                 TrashInspection trashInspection = _dbContext.TrashInspections.SingleOrDefault(x => x.Id == trashInspectionCase.TrashInspectionId);
@@ -61,7 +61,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                     if (trashInspection.Status < 77)
                     {
                         trashInspection.Status = 77;
-                        trashInspection.Update(_dbContext);
+                        await trashInspection.Update(_dbContext);
                     }    
                 }
             }

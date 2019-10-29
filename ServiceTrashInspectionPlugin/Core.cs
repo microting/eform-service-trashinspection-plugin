@@ -49,7 +49,6 @@ namespace ServiceTrashInspectionPlugin
         private IWindsorContainer _container;
         public IBus _bus;
         private bool _coreThreadRunning = false;
-        private bool _coreRestarting = false;
         private bool _coreStatChanging = false;
         private bool _coreAvailable = false;
         private string _serviceLocation;
