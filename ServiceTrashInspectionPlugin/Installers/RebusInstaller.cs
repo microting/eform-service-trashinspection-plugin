@@ -49,7 +49,6 @@ namespace ServiceTrashInspectionPlugin.Installers
                 {
                     o.SetMaxParallelism(maxParallelism);
                     o.SetNumberOfWorkers(numberOfWorkers);
-                    o.LogPipeline(verbose:true);
                 })
                 .Start();            
         }
