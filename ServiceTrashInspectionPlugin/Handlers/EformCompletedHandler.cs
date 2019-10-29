@@ -92,7 +92,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 
                 Console.WriteLine("TrashInspection: The incoming case is a trash inspection related case");
                 trashInspectionCase.Status = 100;
-                trashInspectionCase.Update(_dbContext);
+                await trashInspectionCase.Update(_dbContext);
 
                 TrashInspection trashInspection = _dbContext.TrashInspections.SingleOrDefault(x => x.Id == trashInspectionCase.TrashInspectionId);
                 if (trashInspection != null)
@@ -102,7 +102,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                     trashInspection.Comment = comment;
                     trashInspection.ApprovedValue = approvedValue;
                     trashInspection.InspectionDone = true;
-                    trashInspection.Update(_dbContext);
+                    await trashInspection.Update(_dbContext);
 
                     List<TrashInspectionCase> trashInspectionCases = _dbContext.TrashInspectionCases
                         .Where(x => x.TrashInspectionId == trashInspection.Id).ToList();
@@ -111,7 +111,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         if (_sdkCore.CaseDelete(int.Parse(inspectionCase.SdkCaseId)))
                         {
                             inspectionCase.WorkflowState = Constants.WorkflowStates.Retracted;
-                            inspectionCase.Update(_dbContext);
+                            await inspectionCase.Update(_dbContext);
                         }
                     }
 
@@ -137,6 +137,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         x.Name == "TrashInspectionBaseSettings:CallbackCredentialAuthType")?.Value;
                     Console.WriteLine("callbackCredentialAuthType is : " + callbackCredentialAuthType);
 
+                    Console.WriteLine($"trashInspection.WeighingNumber is {trashInspection.WeighingNumber}");
                     #endregion
 
                     switch (callbackCredentialAuthType)
