@@ -21,7 +21,6 @@
 	        <IncludeAssets>all</IncludeAssets>
 	</PackageReference>
     <PackageReference Include="Microting.WindowsService.BasePn" Version="1.1.13" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.6" />
     <PackageReference Include="System.ComponentModel.Composition" Version="4.5.0" />
     <PackageReference Include="System.Security.Permissions" Version="4.5.0" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.5.3" />
