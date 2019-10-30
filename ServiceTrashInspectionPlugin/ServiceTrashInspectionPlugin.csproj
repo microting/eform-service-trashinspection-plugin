@@ -9,7 +9,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>../../../ServiceTestConsole/bin/Debug/Plugins/TrashInspection</OutputPath>
+    <OutputPath>../../MicrotingService/bin/Debug/Plugins/ServiceTrashinspectionPlugin/</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>../../MicrotingService/bin/Debug/Plugins/ServiceTrashinspectionPlugin/</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

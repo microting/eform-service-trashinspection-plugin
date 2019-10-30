@@ -106,7 +106,7 @@ namespace ServiceTrashInspectionPlugin
 
         public bool Start(string sdkConnectionString, string serviceLocation)
         {
-            Console.WriteLine("TrashInspectionPlugin start called");
+            Console.WriteLine("[INF] TrashInspectionPlugin start called");
             try
             {
                 string dbNameSection;

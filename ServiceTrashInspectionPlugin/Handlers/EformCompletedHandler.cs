@@ -50,7 +50,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
         public async Task Handle(eFormCompleted message)
         {
 
-            Console.WriteLine("TrashInspection: We got a message : " + message.caseId);
+            Console.WriteLine("[DBG] TrashInspection: We got a message : " + message.caseId);
             TrashInspectionCase trashInspectionCase = _dbContext.TrashInspectionCases.SingleOrDefault(x => x.SdkCaseId == message.caseId.ToString());
             if (trashInspectionCase != null)
             {
@@ -65,27 +65,27 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 bool inspectionApproved = false;
                 string approvedValue = "";
                 string comment = "";
-                Console.WriteLine("Trying to find the field with the approval value");
+                Console.WriteLine("[DBG] Trying to find the field with the approval value");
                 foreach (var field in dataElement.DataItemList)
                 {
                     Field f = (Field) field;
-                    if (f.Label.Contains("Angiv om læs er Godkendt"))
+                    if (f.Label.Contains("[DBG] Angiv om læs er Godkendt"))
                     {
                         Console.WriteLine($"The field is {f.Label}");
                         FieldValue fv = f.FieldValues[0];
                         String fieldValue = fv.Value;
                         inspectionApproved = (fieldValue == "1");
                         approvedValue = fieldValue;
-                        Console.WriteLine($"We are setting the approved state to {inspectionApproved.ToString()}");
+                        Console.WriteLine($"[DBG] We are setting the approved state to {inspectionApproved.ToString()}");
                     }
 
                     if (f.Label.Equals("Kommentar"))
                     {
-                        Console.WriteLine($"The field is {f.Label}");
+                        Console.WriteLine($"[DBG] The field is {f.Label}");
                         FieldValue fv = f.FieldValues[0];
                         String fieldValue = fv.Value;
                         comment = fieldValue;
-                        Console.WriteLine($"We are setting the comment to {comment.ToString()}");
+                        Console.WriteLine($"[DBG] We are setting the comment to {comment.ToString()}");
                     }
                 }
                 #endregion
@@ -119,25 +119,25 @@ namespace ServiceTrashInspectionPlugin.Handlers
 
                     string callBackUrl = _dbContext.PluginConfigurationValues
                         .SingleOrDefault(x => x.Name == "TrashInspectionBaseSettings:callBackUrl")?.Value;
-                    Console.WriteLine("callBackUrl is : " + callBackUrl);
+                    Console.WriteLine("[DBG] callBackUrl is : " + callBackUrl);
 
                     string callBackCredentialDomain = _dbContext.PluginConfigurationValues.SingleOrDefault(x =>
                         x.Name == "TrashInspectionBaseSettings:CallBackCredentialDomain")?.Value;
-                    Console.WriteLine("callBackCredentialDomain is : " + callBackCredentialDomain);
+                    Console.WriteLine("[DBG] callBackCredentialDomain is : " + callBackCredentialDomain);
 
                     string callbackCredentialUserName = _dbContext.PluginConfigurationValues.SingleOrDefault(x =>
                         x.Name == "TrashInspectionBaseSettings:callbackCredentialUserName")?.Value;
-                    Console.WriteLine("callbackCredentialUserName is : " + callbackCredentialUserName);
+                    Console.WriteLine("[DBG] callbackCredentialUserName is : " + callbackCredentialUserName);
 
                     string callbackCredentialPassword = _dbContext.PluginConfigurationValues.SingleOrDefault(x =>
                         x.Name == "TrashInspectionBaseSettings:CallbackCredentialPassword")?.Value;
-                    Console.WriteLine("callbackCredentialPassword is : " + callbackCredentialPassword);
+                    Console.WriteLine("[DBG] callbackCredentialPassword is : " + callbackCredentialPassword);
 
                     string callbackCredentialAuthType = _dbContext.PluginConfigurationValues.SingleOrDefault(x =>
                         x.Name == "TrashInspectionBaseSettings:CallbackCredentialAuthType")?.Value;
-                    Console.WriteLine("callbackCredentialAuthType is : " + callbackCredentialAuthType);
+                    Console.WriteLine("[DBG] callbackCredentialAuthType is : " + callbackCredentialAuthType);
 
-                    Console.WriteLine($"trashInspection.WeighingNumber is {trashInspection.WeighingNumber}");
+                    Console.WriteLine($"[DBG] trashInspection.WeighingNumber is {trashInspection.WeighingNumber}");
                     #endregion
 
                     switch (callbackCredentialAuthType)
@@ -195,12 +195,12 @@ namespace ServiceTrashInspectionPlugin.Handlers
                                 serviceProxy.WeighingFromMicroting2Async(weighingFromMicroting2);
 
 
-                            Console.WriteLine("Result is " + result.Result.return_value);
+                            Console.WriteLine("[DBG] Result is " + result.Result.return_value);
 
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine("We got the following error: " + ex.Message);
+                            Console.WriteLine("[ERR] We got the following error: " + ex.Message);
                         }
                         finally
                         {
@@ -246,12 +246,12 @@ namespace ServiceTrashInspectionPlugin.Handlers
                                 serviceProxy.WeighingFromMicroting2Async(weighingFromMicroting2);
 
 
-                            Console.WriteLine("Result is " + result.Result.return_value);
+                            Console.WriteLine("[DBG] Result is " + result.Result.return_value);
 
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine("We got the following error: " + ex.Message);
+                            Console.WriteLine("[ERR] We got the following error: " + ex.Message);
                         }
                         finally
                         {
