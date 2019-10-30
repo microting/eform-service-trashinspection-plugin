@@ -19,9 +19,9 @@ namespace TrashInspectionServiceReference
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TrashInspectionServiceReference.WeighingFromMicroting2_Result> WeighingFromMicroting2Async(TrashInspectionServiceReference.WeighingFromMicroting2 request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="urn:microsoft-dynamics-schemas/codeunit/MicrotingWS:WeighingToMicroting2", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="urn:microsoft-dynamics-schemas/codeunit/MicrotingWS:WeighingToMicroting", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<TrashInspectionServiceReference.WeighingToMicroting2_Result> WeighingToMicroting2Async(TrashInspectionServiceReference.WeighingToMicroting2 request);
+        System.Threading.Tasks.Task<TrashInspectionServiceReference.WeighingToMicroting_Result> WeighingToMicrotingAsync(TrashInspectionServiceReference.WeighingToMicroting request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -71,18 +71,18 @@ namespace TrashInspectionServiceReference
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="WeighingToMicroting2", WrapperNamespace="urn:microsoft-dynamics-schemas/codeunit/MicrotingWS", IsWrapped=true)]
-    public partial class WeighingToMicroting2
+    [System.ServiceModel.MessageContractAttribute(WrapperName="WeighingToMicroting", WrapperNamespace="urn:microsoft-dynamics-schemas/codeunit/MicrotingWS", IsWrapped=true)]
+    public partial class WeighingToMicroting
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:microsoft-dynamics-schemas/codeunit/MicrotingWS", Order=0)]
         public string _WeighingNo;
         
-        public WeighingToMicroting2()
+        public WeighingToMicroting()
         {
         }
         
-        public WeighingToMicroting2(string _WeighingNo)
+        public WeighingToMicroting(string _WeighingNo)
         {
             this._WeighingNo = _WeighingNo;
         }
@@ -91,18 +91,18 @@ namespace TrashInspectionServiceReference
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="WeighingToMicroting2_Result", WrapperNamespace="urn:microsoft-dynamics-schemas/codeunit/MicrotingWS", IsWrapped=true)]
-    public partial class WeighingToMicroting2_Result
+    [System.ServiceModel.MessageContractAttribute(WrapperName="WeighingToMicroting_Result", WrapperNamespace="urn:microsoft-dynamics-schemas/codeunit/MicrotingWS", IsWrapped=true)]
+    public partial class WeighingToMicroting_Result
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:microsoft-dynamics-schemas/codeunit/MicrotingWS", Order=0)]
         public string return_value;
         
-        public WeighingToMicroting2_Result()
+        public WeighingToMicroting_Result()
         {
         }
         
-        public WeighingToMicroting2_Result(string return_value)
+        public WeighingToMicroting_Result(string return_value)
         {
             this.return_value = return_value;
         }
@@ -173,16 +173,16 @@ namespace TrashInspectionServiceReference
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<TrashInspectionServiceReference.WeighingToMicroting2_Result> TrashInspectionServiceReference.MicrotingWS_Port.WeighingToMicroting2Async(TrashInspectionServiceReference.WeighingToMicroting2 request)
+        System.Threading.Tasks.Task<TrashInspectionServiceReference.WeighingToMicroting_Result> TrashInspectionServiceReference.MicrotingWS_Port.WeighingToMicrotingAsync(TrashInspectionServiceReference.WeighingToMicroting request)
         {
-            return base.Channel.WeighingToMicroting2Async(request);
+            return base.Channel.WeighingToMicrotingAsync(request);
         }
         
-        public System.Threading.Tasks.Task<TrashInspectionServiceReference.WeighingToMicroting2_Result> WeighingToMicroting2Async(string _WeighingNo)
+        public System.Threading.Tasks.Task<TrashInspectionServiceReference.WeighingToMicroting_Result> WeighingToMicrotingAsync(string _WeighingNo)
         {
-            TrashInspectionServiceReference.WeighingToMicroting2 inValue = new TrashInspectionServiceReference.WeighingToMicroting2();
+            TrashInspectionServiceReference.WeighingToMicroting inValue = new TrashInspectionServiceReference.WeighingToMicroting();
             inValue._WeighingNo = _WeighingNo;
-            return ((TrashInspectionServiceReference.MicrotingWS_Port)(this)).WeighingToMicroting2Async(inValue);
+            return ((TrashInspectionServiceReference.MicrotingWS_Port)(this)).WeighingToMicrotingAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
