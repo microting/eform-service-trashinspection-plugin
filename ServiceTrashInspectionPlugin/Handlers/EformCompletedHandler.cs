@@ -57,10 +57,10 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 
                 #region get case information
 
-                Case_Dto caseDto = _sdkCore.CaseLookupMUId(message.caseId);
+                Case_Dto caseDto = await _sdkCore.CaseLookupMUId(message.caseId);
                 var microtingUId = caseDto.MicrotingUId;
                 var microtingCheckUId = caseDto.CheckUId;
-                ReplyElement theCase = _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId);
+                ReplyElement theCase = await _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId);
                 CheckListValue dataElement = (CheckListValue)theCase.ElementList[0];
                 bool inspectionApproved = false;
                 string approvedValue = "";
@@ -108,7 +108,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         .Where(x => x.TrashInspectionId == trashInspection.Id).ToList();
                     foreach (TrashInspectionCase inspectionCase in trashInspectionCases)
                     {
-                        if (_sdkCore.CaseDelete(int.Parse(inspectionCase.SdkCaseId)))
+                        if (await _sdkCore.CaseDelete(int.Parse(inspectionCase.SdkCaseId)))
                         {
                             inspectionCase.WorkflowState = Constants.WorkflowStates.Retracted;
                             await inspectionCase.Update(_dbContext);
