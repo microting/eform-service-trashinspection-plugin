@@ -69,7 +69,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 foreach (var field in dataElement.DataItemList)
                 {
                     Field f = (Field) field;
-                    if (f.Label.Contains("[DBG] Angiv om læs er Godkendt"))
+                    if (f.Label.Contains("Angiv om læs er Godkendt"))
                     {
                         Console.WriteLine($"The field is {f.Label}");
                         FieldValue fv = f.FieldValues[0];
