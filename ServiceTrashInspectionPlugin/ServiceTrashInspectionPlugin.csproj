@@ -21,7 +21,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
     <PackageReference Include="Microting.eForm" Version="3.1.6" />
-    <PackageReference Include="Microting.eFormTrashInspectionBase" Version="1.1.127">
+    <PackageReference Include="Microting.eFormTrashInspectionBase" Version="1.1.128">
 	        <IncludeAssets>all</IncludeAssets>
 	</PackageReference>
     <PackageReference Include="Microting.WindowsService.BasePn" Version="1.1.13" />
