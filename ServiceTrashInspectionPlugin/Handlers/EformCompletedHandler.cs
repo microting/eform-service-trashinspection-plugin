@@ -57,7 +57,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 
                 #region get case information
 
-                Case_Dto caseDto = await _sdkCore.CaseLookupMUId(message.caseId);
+                CaseDto caseDto = await _sdkCore.CaseLookupMUId(message.caseId);
                 var microtingUId = caseDto.MicrotingUId;
                 var microtingCheckUId = caseDto.CheckUId;
                 ReplyElement theCase = await _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId);
