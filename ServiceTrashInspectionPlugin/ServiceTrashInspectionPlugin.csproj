@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
-    <PackageReference Include="Microting.eForm" Version="3.1.36" />
+    <PackageReference Include="Microting.eForm" Version="3.1.39" />
     <PackageReference Include="Microting.eFormTrashInspectionBase" Version="1.1.154">
 	        <IncludeAssets>all</IncludeAssets>
 	</PackageReference>
