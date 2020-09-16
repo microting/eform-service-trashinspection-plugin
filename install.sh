@@ -21,5 +21,5 @@ su ubuntu -c \
 "mkdir -p /var/www/microting/eform-debian-service/MicrotingService/out/Plugins/"
 
 su ubuntu -c \
-"cp -av /var/www/microting/eform-service-trashinspection-plugin/ServiceTrashInspectionPlugin/out /var/www/microting/eform-debian-service/MicrotingService/out/Plugins/ServiceTrashInspectionPlugin"
+"cp -av /var/www/microting/eform-service-trashinspection-plugin/out /var/www/microting/eform-debian-service/MicrotingService/out/Plugins/ServiceTrashInspectionPlugin"
 /rabbitmqadmin declare queue name=eform-service-trashinspection-plugin durable=true
