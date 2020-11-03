@@ -51,7 +51,8 @@ namespace ServiceTrashInspectionPlugin.Handlers
         {
 
             Console.WriteLine("[DBG] TrashInspection: We got a message : " + message.caseId);
-            TrashInspectionCase trashInspectionCase = _dbContext.TrashInspectionCases.SingleOrDefault(x => x.SdkCaseId == message.caseId.ToString());
+            TrashInspectionCase trashInspectionCase =
+                _dbContext.TrashInspectionCases.SingleOrDefault(x => x.SdkCaseId == message.caseId.ToString());
             if (trashInspectionCase != null)
             {
                 
@@ -94,7 +95,8 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 trashInspectionCase.Status = 100;
                 await trashInspectionCase.Update(_dbContext);
 
-                TrashInspection trashInspection = _dbContext.TrashInspections.SingleOrDefault(x => x.Id == trashInspectionCase.TrashInspectionId);
+                TrashInspection trashInspection =
+                    _dbContext.TrashInspections.SingleOrDefault(x => x.Id == trashInspectionCase.TrashInspectionId);
                 if (trashInspection != null)
                 {
                     trashInspection.Status = 100;
@@ -143,12 +145,12 @@ namespace ServiceTrashInspectionPlugin.Handlers
                     switch (callbackCredentialAuthType)
                     {
                         case "NTLM":
-                            callUrlNtlmAuth(callBackUrl, callBackCredentialDomain, callbackCredentialUserName,
+                            await CallUrlNtlmAuth(callBackUrl, callBackCredentialDomain, callbackCredentialUserName,
                                 callbackCredentialPassword, trashInspection, inspectionApproved);
                             break;
                         case "basic":
                         default:
-                            callUrlBaiscAuth(callBackUrl, callBackCredentialDomain, callbackCredentialUserName,
+                            await CallUrlBaiscAuth(callBackUrl, callBackCredentialDomain, callbackCredentialUserName,
                                 callbackCredentialPassword, trashInspection, inspectionApproved);
                             break;
                     }
@@ -157,8 +159,9 @@ namespace ServiceTrashInspectionPlugin.Handlers
             
         }
 
-        private void callUrlBaiscAuth(string callBackUrl, string callBackCredentialDomain, 
-            string callbackCredentialUserName, string callbackCredentialPassword, TrashInspection trashInspection, bool inspectionApproved)
+        private async Task CallUrlBaiscAuth(string callBackUrl, string callBackCredentialDomain, 
+            string callbackCredentialUserName, string callbackCredentialPassword, TrashInspection trashInspection,
+            bool inspectionApproved)
         {
 
             ChannelFactory<MicrotingWS_Port> factory;
@@ -181,9 +184,6 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         factory.Credentials.UserName.UserName = callbackCredentialUserName;
                         factory.Credentials.UserName.Password = callbackCredentialPassword;
                         
-//                        factory.Credentials.Windows.ClientCredential.UserName = callbackCredentialUserName;
-//                        factory.Credentials.Windows.ClientCredential.Password = callbackCredentialPassword;
-
                         serviceProxy = factory.CreateChannel();
                         ((ICommunicationObject)serviceProxy).Open();
 
@@ -196,11 +196,16 @@ namespace ServiceTrashInspectionPlugin.Handlers
 
 
                             Console.WriteLine("[DBG] Result is " + result.Result.return_value);
+                            trashInspection.SuccessMessageFromCallBack = result.Result.return_value;
+                            trashInspection.ResponseSendToCallBackUrl = true;
+                            await trashInspection.Update(_dbContext);
 
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine("[ERR] We got the following error: " + ex.Message);
+                            trashInspection.ErrorFromCallBack = ex.Message;
+                            await trashInspection.Update(_dbContext);
                         }
                         finally
                         {
@@ -213,7 +218,9 @@ namespace ServiceTrashInspectionPlugin.Handlers
                         }
         }
 
-        private void callUrlNtlmAuth(string callBackUrl, string callBackCredentialDomain, string callbackCredentialUserName, string callbackCredentialPassword, TrashInspection trashInspection, bool inspectionApproved)
+        private async Task CallUrlNtlmAuth(string callBackUrl, string callBackCredentialDomain,
+            string callbackCredentialUserName, string callbackCredentialPassword, TrashInspection trashInspection,
+            bool inspectionApproved)
         {
 
             ChannelFactory<MicrotingWS_Port> factory;
@@ -247,11 +254,16 @@ namespace ServiceTrashInspectionPlugin.Handlers
 
 
                             Console.WriteLine("[DBG] Result is " + result.Result.return_value);
+                            trashInspection.SuccessMessageFromCallBack = result.Result.return_value;
+                            trashInspection.ResponseSendToCallBackUrl = true;
+                            await trashInspection.Update(_dbContext);
 
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine("[ERR] We got the following error: " + ex.Message);
+                            trashInspection.ErrorFromCallBack = ex.Message;
+                            await trashInspection.Update(_dbContext);
                         }
                         finally
                         {
