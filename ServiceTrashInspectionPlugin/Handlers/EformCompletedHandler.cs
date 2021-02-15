@@ -23,8 +23,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microting.eForm.Dto;
+using Microting.eForm.Infrastructure;
 using Microting.eForm.Infrastructure.Constants;
+using Microting.eForm.Infrastructure.Data.Entities;
 using Microting.eForm.Infrastructure.Models;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data;
 using Microting.eFormTrashInspectionBase.Infrastructure.Data.Entities;
@@ -32,6 +35,9 @@ using Rebus.Handlers;
 using ServiceTrashInspectionPlugin.Infrastructure.Helpers;
 using ServiceTrashInspectionPlugin.Messages;
 using TrashInspectionServiceReference;
+using CheckListValue = Microting.eForm.Infrastructure.Models.CheckListValue;
+using Field = Microting.eForm.Infrastructure.Models.Field;
+using FieldValue = Microting.eForm.Infrastructure.Models.FieldValue;
 
 namespace ServiceTrashInspectionPlugin.Handlers
 {
@@ -55,13 +61,15 @@ namespace ServiceTrashInspectionPlugin.Handlers
                 _dbContext.TrashInspectionCases.SingleOrDefault(x => x.SdkCaseId == message.caseId.ToString());
             if (trashInspectionCase != null)
             {
-                
+
                 #region get case information
 
                 CaseDto caseDto = await _sdkCore.CaseLookupMUId(message.caseId);
+                await using MicrotingDbContext microtingDbContext = _sdkCore.DbContextHelper.GetDbContext();
                 var microtingUId = caseDto.MicrotingUId;
                 var microtingCheckUId = caseDto.CheckUId;
-                ReplyElement theCase = await _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId);
+                Language language = await microtingDbContext.Languages.SingleAsync(x => x.Name == "Danish");
+                ReplyElement theCase = await _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId, language);
                 CheckListValue dataElement = (CheckListValue)theCase.ElementList[0];
                 bool inspectionApproved = false;
                 string approvedValue = "";
@@ -90,7 +98,7 @@ namespace ServiceTrashInspectionPlugin.Handlers
                     }
                 }
                 #endregion
-                
+
                 Console.WriteLine("TrashInspection: The incoming case is a trash inspection related case");
                 trashInspectionCase.Status = 100;
                 await trashInspectionCase.Update(_dbContext);
@@ -156,10 +164,10 @@ namespace ServiceTrashInspectionPlugin.Handlers
                     }
                 }
             }
-            
+
         }
 
-        private async Task CallUrlBaiscAuth(string callBackUrl, string callBackCredentialDomain, 
+        private async Task CallUrlBaiscAuth(string callBackUrl, string callBackCredentialDomain,
             string callbackCredentialUserName, string callbackCredentialPassword, TrashInspection trashInspection,
             bool inspectionApproved)
         {
@@ -175,15 +183,15 @@ namespace ServiceTrashInspectionPlugin.Handlers
                             new ChannelFactory<MicrotingWS_Port>(basicHttpBinding,
                                 new EndpointAddress(
                                     new Uri(callBackUrl)));
-                        
+
                         if (callBackCredentialDomain != "...")
                         {
-                            factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;    
+                            factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;
                         }
 
                         factory.Credentials.UserName.UserName = callbackCredentialUserName;
                         factory.Credentials.UserName.Password = callbackCredentialPassword;
-                        
+
                         serviceProxy = factory.CreateChannel();
                         ((ICommunicationObject)serviceProxy).Open();
 
@@ -233,12 +241,12 @@ namespace ServiceTrashInspectionPlugin.Handlers
                             new ChannelFactory<MicrotingWS_Port>(basicHttpBindingntlm,
                                 new EndpointAddress(
                                     new Uri(callBackUrl)));
-                        
+
                         if (callBackCredentialDomain != "...")
                         {
-                            factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;    
+                            factory.Credentials.Windows.ClientCredential.Domain = callBackCredentialDomain;
                         }
-                        
+
                         factory.Credentials.Windows.ClientCredential.UserName = callbackCredentialUserName;
                         factory.Credentials.Windows.ClientCredential.Password = callbackCredentialPassword;
 
