@@ -1,8 +1,30 @@
 # Changelog
 
+## [v1.0.67](https://github.com/microting/eform-service-trashinspection-plugin/tree/v1.0.67) (2021-02-24)
+
+[Full Changelog](https://github.com/microting/eform-service-trashinspection-plugin/compare/v1.0.66...v1.0.67)
+
+**Implemented enhancements:**
+
+- Bump Microting.eFormApi.BasePn from 2.0.97 to 2.0.98 [\#33](https://github.com/microting/eform-service-trashinspection-plugin/issues/33)
+- Bump Microting.eForm from 4.4.1 to 4.4.2 [\#32](https://github.com/microting/eform-service-trashinspection-plugin/issues/32)
+
+**Merged pull requests:**
+
+- Bump System.ServiceModel.Http from 4.7.0 to 4.8.1 [\#23](https://github.com/microting/eform-service-trashinspection-plugin/pull/23) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump System.ServiceModel.NetTcp from 4.7.0 to 4.8.1 [\#22](https://github.com/microting/eform-service-trashinspection-plugin/pull/22) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump System.ServiceModel.Duplex from 4.7.0 to 4.8.1 [\#21](https://github.com/microting/eform-service-trashinspection-plugin/pull/21) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump System.ServiceModel.Primitives from 4.7.0 to 4.8.1 [\#19](https://github.com/microting/eform-service-trashinspection-plugin/pull/19) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump System.ServiceModel.Security from 4.7.0 to 4.8.1 [\#18](https://github.com/microting/eform-service-trashinspection-plugin/pull/18) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
 ## [v1.0.66](https://github.com/microting/eform-service-trashinspection-plugin/tree/v1.0.66) (2021-02-23)
 
 [Full Changelog](https://github.com/microting/eform-service-trashinspection-plugin/compare/v1.0.65...v1.0.66)
+
+**Implemented enhancements:**
+
+- Bump Microting.eFormTrashInspectionBase from 2.0.46 to 2.0.47 [\#30](https://github.com/microting/eform-service-trashinspection-plugin/issues/30)
+- Bump Microting.eForm from 4.3.17 to 4.4.1 [\#29](https://github.com/microting/eform-service-trashinspection-plugin/issues/29)
 
 ## [v1.0.65](https://github.com/microting/eform-service-trashinspection-plugin/tree/v1.0.65) (2021-02-18)
 
