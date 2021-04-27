@@ -78,12 +78,18 @@ namespace ServiceTrashInspectionPlugin
 
         public void eFormProcessed(object sender, EventArgs args)
         {
-            // Do nothing
+            CaseDto trigger = (CaseDto)sender;
+
+            int? caseId = trigger.MicrotingUId;
+            if (caseId != null) _bus.SendLocal(new EformParsedByServer((int) caseId));
         }
 
         public void eFormProcessingError(object sender, EventArgs args)
         {
-            // Do nothing
+            CaseDto trigger = (CaseDto)sender;
+
+            int? caseId = trigger.MicrotingUId;
+            if (caseId != null) _bus.SendLocal(new EformParsingError((int) caseId));
         }
 
         public void eFormRetrived(object sender, EventArgs args)
@@ -120,8 +126,8 @@ namespace ServiceTrashInspectionPlugin
                     dbNameSection = Regex.Match(sdkConnectionString, @"(Initial Catalog=\w*;)").Groups[0].Value;
                     dbPrefix = Regex.Match(sdkConnectionString, @"Initial Catalog=(\d*)_").Groups[1].Value;
                 }
-                
-                
+
+
                 string pluginDbName = $"Initial Catalog={dbPrefix}_eform-angular-trashinspection-plugin;";
                 string connectionString = sdkConnectionString.Replace(dbNameSection, pluginDbName);
 
@@ -130,7 +136,7 @@ namespace ServiceTrashInspectionPlugin
                 {
                     _serviceLocation = serviceLocation;
                     _coreStatChanging = true;
-                    
+
                     if (string.IsNullOrEmpty(_serviceLocation))
                         throw new ArgumentException("serviceLocation is not allowed to be null or empty");
 
@@ -172,7 +178,7 @@ namespace ServiceTrashInspectionPlugin
 
         public bool Stop(bool shutdownReallyFast)
         {
-            
+
             try
             {
                 if (_coreAvailable && !_coreStatChanging)
@@ -209,7 +215,7 @@ namespace ServiceTrashInspectionPlugin
         {
             throw new NotImplementedException();
         }
-        
+
         public void startSdkCoreSqlOnly(string sdkConnectionString)
         {
             _sdkCore = new eFormCore.Core();
