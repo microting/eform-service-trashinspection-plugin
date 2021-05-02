@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.0.75](https://github.com/microting/eform-service-trashinspection-plugin/tree/v1.0.75) (2021-05-02)
+
+[Full Changelog](https://github.com/microting/eform-service-trashinspection-plugin/compare/v1.0.74...v1.0.75)
+
 ## [v1.0.74](https://github.com/microting/eform-service-trashinspection-plugin/tree/v1.0.74) (2021-05-01)
 
 [Full Changelog](https://github.com/microting/eform-service-trashinspection-plugin/compare/v1.0.73...v1.0.74)
