@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.0.91](https://github.com/microting/eform-service-trashinspection-plugin/tree/v1.0.91) (2021-06-09)
+
+[Full Changelog](https://github.com/microting/eform-service-trashinspection-plugin/compare/v1.0.90...v1.0.91)
+
+**Implemented enhancements:**
+
+- Bump Microting.eFormTrashInspectionBase from 3.0.12 to 3.0.13 [\#160](https://github.com/microting/eform-service-trashinspection-plugin/issues/160)
+- Bump Microting.eFormApi.BasePn from 3.0.19 to 3.0.20 [\#159](https://github.com/microting/eform-service-trashinspection-plugin/issues/159)
+- Bump Microting.eForm from 5.2.8 to 5.2.9 [\#158](https://github.com/microting/eform-service-trashinspection-plugin/issues/158)
+
 ## [v1.0.90](https://github.com/microting/eform-service-trashinspection-plugin/tree/v1.0.90) (2021-06-08)
 
 [Full Changelog](https://github.com/microting/eform-service-trashinspection-plugin/compare/v1.0.89...v1.0.90)
@@ -142,6 +152,7 @@
 - Upgrade to GitHub-native Dependabot [\#92](https://github.com/microting/eform-service-trashinspection-plugin/pull/92) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump NUnit from 3.13.1 to 3.13.2 [\#89](https://github.com/microting/eform-service-trashinspection-plugin/pull/89) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump Microsoft.NET.Test.Sdk from 16.9.1 to 16.9.4 [\#55](https://github.com/microting/eform-service-trashinspection-plugin/pull/55) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump System.ServiceModel.NetTcp from 4.7.0 to 4.8.1 [\#22](https://github.com/microting/eform-service-trashinspection-plugin/pull/22) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [v1.0.76](https://github.com/microting/eform-service-trashinspection-plugin/tree/v1.0.76) (2021-05-02)
 
@@ -238,7 +249,6 @@
 **Merged pull requests:**
 
 - Bump System.ServiceModel.Http from 4.7.0 to 4.8.1 [\#23](https://github.com/microting/eform-service-trashinspection-plugin/pull/23) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump System.ServiceModel.NetTcp from 4.7.0 to 4.8.1 [\#22](https://github.com/microting/eform-service-trashinspection-plugin/pull/22) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump System.ServiceModel.Duplex from 4.7.0 to 4.8.1 [\#21](https://github.com/microting/eform-service-trashinspection-plugin/pull/21) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump System.ServiceModel.Primitives from 4.7.0 to 4.8.1 [\#19](https://github.com/microting/eform-service-trashinspection-plugin/pull/19) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump System.ServiceModel.Security from 4.7.0 to 4.8.1 [\#18](https://github.com/microting/eform-service-trashinspection-plugin/pull/18) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
