@@ -1,5 +1,20 @@
 # Changelog
 
+## [v1.0.96](https://github.com/microting/eform-service-trashinspection-plugin/tree/v1.0.96) (2021-07-05)
+
+[Full Changelog](https://github.com/microting/eform-service-trashinspection-plugin/compare/v1.0.95...v1.0.96)
+
+**Implemented enhancements:**
+
+- Bump Microting.eFormTrashInspectionBase from 3.0.13 to 3.0.14 [\#172](https://github.com/microting/eform-service-trashinspection-plugin/issues/172)
+- Bump Microting.eFormApi.BasePn from 3.0.25 to 3.0.27 [\#171](https://github.com/microting/eform-service-trashinspection-plugin/issues/171)
+- Bump Microting.eForm from 5.2.13 to 5.2.14 [\#170](https://github.com/microting/eform-service-trashinspection-plugin/issues/170)
+
+**Merged pull requests:**
+
+- Bump NUnit3TestAdapter from 3.17.0 to 4.0.0 [\#157](https://github.com/microting/eform-service-trashinspection-plugin/pull/157) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump Microsoft.NET.Test.Sdk from 16.9.4 to 16.10.0 [\#133](https://github.com/microting/eform-service-trashinspection-plugin/pull/133) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v1.0.95](https://github.com/microting/eform-service-trashinspection-plugin/tree/v1.0.95) (2021-06-27)
 
 [Full Changelog](https://github.com/microting/eform-service-trashinspection-plugin/compare/v1.0.94...v1.0.95)
@@ -186,6 +201,7 @@
 
 - Upgrade to GitHub-native Dependabot [\#92](https://github.com/microting/eform-service-trashinspection-plugin/pull/92) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump NUnit from 3.13.1 to 3.13.2 [\#89](https://github.com/microting/eform-service-trashinspection-plugin/pull/89) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump Microsoft.NET.Test.Sdk from 16.9.1 to 16.9.4 [\#55](https://github.com/microting/eform-service-trashinspection-plugin/pull/55) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [v1.0.76](https://github.com/microting/eform-service-trashinspection-plugin/tree/v1.0.76) (2021-05-02)
 
@@ -281,7 +297,6 @@
 
 **Merged pull requests:**
 
-- Bump Microsoft.NET.Test.Sdk from 16.9.1 to 16.9.4 [\#55](https://github.com/microting/eform-service-trashinspection-plugin/pull/55) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump System.ServiceModel.Http from 4.7.0 to 4.8.1 [\#23](https://github.com/microting/eform-service-trashinspection-plugin/pull/23) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump System.ServiceModel.NetTcp from 4.7.0 to 4.8.1 [\#22](https://github.com/microting/eform-service-trashinspection-plugin/pull/22) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump System.ServiceModel.Duplex from 4.7.0 to 4.8.1 [\#21](https://github.com/microting/eform-service-trashinspection-plugin/pull/21) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
